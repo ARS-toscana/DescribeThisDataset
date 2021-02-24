@@ -23,7 +23,12 @@ When there are some errors in the script, you may want to look at the content of
       -	Individual (bool, default='TRUE'): TRUE if the dataset contains one row per unit of observation 
       -	ColumnN (string): if Individual is FALSE, this is the name of the column that contains the weight of the row 
       -	Cols (str, default='ALL'): columns in the dataset to be described
-      -	HeadOfDataset (bool, optional): caption of head of datasets (first 5 rows of dataset)
+      -	ColsNumeric (list of strings, optional): columns to be considered as numeric
+      -	ColsCategorical (list of strings, optional): columns to be considered as categrical
+      -	ColsBinary (list of strings, optional): columns to be considered as binary
+      -	ColsDates (list of strings, optional): columns to be considered as dates
+      -	ColsBool (list of strings, optional): columns to be considered as boolean
+      -	HeadOfDataset (bool, default='FALSE'): If this is TRUE, the first 5 rows of the dataset are printed in the HTML output file
       -	PathOutputFolder (str):  name of output folder in which the HTLM file is saved
       -	NameOutputFile(str, default=’Description_of_NameDataset’):  name of HTML file
 
@@ -33,7 +38,6 @@ An HTML file.
 
 - #### Action
      - Check that the assumptions of the parameters are correct (eg that all required parameters are included, that their assignment is coherent, etc), otherwise throw a error
-     - Read file in PathDataset/NameDataset.ExtensionDataset 
      - Extract formats of variables contined  (str(dataset))
      - If HeadOfDataset ==TRUE, print head
      - For each type of variables process different outputs:
