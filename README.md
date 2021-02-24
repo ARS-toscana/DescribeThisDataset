@@ -19,15 +19,13 @@ When there are some errors in the script, you may want to look at the content of
 
 -	 #### Main parameters:
 
-      -	PathDataset (str): a path that specifies the location/directory of the folder in which dataset of interest is.
-      -	NameDataset (str):  name of dateset to be describe. 
-      -	ExtensionDataset: could be .RData, .csv
-      -	Individual (bool): TRUE if the dataset contains one row per unit of observation 
+      -	NameDataset (str): name of dateset to be described
+      -	Individual (bool, default='TRUE'): TRUE if the dataset contains one row per unit of observation 
       -	ColumnN (string): if Individual is FALSE, this is the name of the column that contains the weight of the row 
-      -	Cols (str, default=’ALL’): columns in the dataset to be describe. 
+      -	Cols (str, default='ALL'): columns in the dataset to be described
       -	HeadOfDataset (bool, optional): caption of head of datasets (first 5 rows of dataset)
-      -	PathOutputFolder (str, default=’PathDataset/g_describeHTML‘):  name of output folder in which HTLM file is saved.
-      -	NameOutputFile(str, default=’Description_of_NameDataset’):  name of HTML file.
+      -	PathOutputFolder (str):  name of output folder in which the HTLM file is saved
+      -	NameOutputFile(str, default=’Description_of_NameDataset’):  name of HTML file
 
 -	#### Structure of output data
 
