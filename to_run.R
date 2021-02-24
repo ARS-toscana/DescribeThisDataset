@@ -8,7 +8,7 @@ thisdir<-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 source(paste0(thisdir,"/DescribeThisDataset.R"))
 # TEst run function:
 
-DescribeThisDataset(PathDataset=thisdir,
+DescribeThisDataset(PathDataset=paste0(thisdir,"/input"),
                     NameDataset="mtcars",
                     ExtensionDataset=".csv",
                     Individual=T,
