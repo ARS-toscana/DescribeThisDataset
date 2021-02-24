@@ -38,7 +38,7 @@ DescribeThisDataset<-function(PathDataset,
   if (!require("data.table")) install.packages("data.table")
   library(data.table)
   
-  dirinput<- paste0(PathDataset,"/input/",NameDataset,ExtensionDataset)
+  dirinput<- paste0(PathDataset,"/",NameDataset,ExtensionDataset)
   diroutput<-paste0(PathOutputFolder,"/",NameOutputFile,".html")
   
   if(ExtensionDataset==".csv"){
