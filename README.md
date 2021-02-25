@@ -1,6 +1,5 @@
 # DescribeThisDataset
-## Syntax
-...
+
 ## Specifications of DescribeThisDataset
 
 -	#### Context
