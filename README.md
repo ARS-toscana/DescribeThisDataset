@@ -1,6 +1,6 @@
 ## Repository of DescribeThisDataset
 
-This repository contains the function DescribeThisDataset that is used in the ConcePTION data pipeline. The documentation of this script is available in the [Wiki](https://github.com/ARS-toscana/ApplyComponentStrategy/wiki) of the repository at this link.
+This repository contains the function DescribeThisDataset that is used in the ConcePTION data pipeline. The documentation of this script is available in the [Wiki](https://github.com/ARS-toscana/DescribeThisDataset/wiki) of the repository at this link.
 
 
 
