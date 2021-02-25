@@ -61,6 +61,10 @@ DescribeThisDataset<-function(PathDataset,
     description <- list(description, p("Head of the dataset:"), tableHTML(head(Dataset)), p(""))
   }
   
+  ## Structure
+  #structure<-as.data.frame(str(Dataset))
+  #description <- list(description, p("Structure of the dataset:"), tableHTML(structure), p(""))
+  
   ## Dimension of the dataset
   Database_dim<-dim(Dataset)
   n_of_observations<-Database_dim[1]
@@ -80,6 +84,39 @@ DescribeThisDataset<-function(PathDataset,
   }
   
   description <- list(description, p("Summary:"), tableHTML(df_output), p(""))
+  
+  ## Variable
+  
+  l<-names(Dataset)
+  
+  for(i in names(Dataset)){
+    
+    if(df_output[1,i]<=10){
+      
+      p=ggplot(Dataset, aes_string(x=i))+
+        geom_bar()
+      
+      plot<-ggplotly(p)
+      description <- list(description, p(paste0("Bar graph of ",i, ":")), plot, p(""))
+    }
+    if(df_output[1,i]>10 & df_output[1,i]<=50){
+      
+      p=ggplot(Dataset, aes_string(x=i))+
+        geom_histogram()
+      
+      plot<-ggplotly(p)
+      description <- list(description, p(paste0("Histogram of ",i, ":")), plot, p(""))
+    }
+    if(df_output[1,i]>50){
+      
+      p=ggplot(Dataset, aes_string(x=i))+
+        geom_density()
+      
+      plot<-ggplotly(p)
+      description <- list(description, p(paste0("Density of ",i, ":")), plot, p(""))
+    }
+    
+  }
   
   ##### saving the html file
   save_html(list(title, description), diroutput)
