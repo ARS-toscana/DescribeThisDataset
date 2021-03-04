@@ -56,8 +56,8 @@ DescribeThisDataset<-function(Dataset,
   }
   
   ## Structure
-  #structure<-as.data.frame(str(Dataset))
-  #description <- list(description, p("Structure of the dataset:"), tableHTML(structure), p(""))
+  structure<-as.matrix(capture.output(str(Dataset)))
+  description <- list(description, p("Structure of the dataset:"), tableHTML(structure), p(""))
   
   ## Dimension of the dataset
   
@@ -83,7 +83,7 @@ DescribeThisDataset<-function(Dataset,
   
   ## Variable
   
-  l<-names(Dataset)
+  #l<-names(Dataset)
   
   for(i in names(Dataset)){
     
