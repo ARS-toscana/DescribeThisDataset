@@ -4,9 +4,7 @@
 #'
 #'
 #'
-#' @param PathDataset (str) a path that specifies the location/directory of the folder in which dataset of interest is.
-#' @param NameDataset (str) name of dateset to be describe. 
-#' @param ExtensionDataset (str) could be .RData, .csv
+#' @param Dataset (data.table/data.frame) a dataset to be described.
 #' @param individual (boolean, default=TRUE). If TRUE, the dataset is at individual level, otherwise it is an aggregate dataset.
 #' @param Cols (list, default=ALL) list of names of the columns to be described. 
 #' @param HeadOfDataset (boolean, default=TRUE) caption of head of datasets (first 5 rows of dataset)
@@ -15,14 +13,13 @@
 
 
 
-DescribeThisDataset<-function(PathDataset,
-                              NameDataset,
-                              ExtensionDataset,
+DescribeThisDataset<-function(Dataset,
                               Individual,
-                              Cols=TRUE,
+                              #Cols=list(),
                               HeadOfDataset=TRUE,
-                              PathOutputFolder=paste0(PathDataset,"/g_describeHTML"),
-                              NameOutputFile=NameDataset){
+                              PathOutputFolder,
+                              NameOutputFile=""
+                              ){
   
   
   if (!require("htmltools")) install.packages("htmltools")
@@ -38,22 +35,19 @@ DescribeThisDataset<-function(PathDataset,
   if (!require("data.table")) install.packages("data.table")
   library(data.table)
   
-  dirinput<- paste0(PathDataset,"/",NameDataset,ExtensionDataset)
-  diroutput<-paste0(PathOutputFolder,"/",NameOutputFile,".html")
-  
-  if(ExtensionDataset==".csv"){
-    Dataset<-fread(dirinput)
-  }else{
-    if(ExtensionDataset==".RData"){
-      Dataset<-load(dirinput)
-    }
+  ## Name output
+  if(NameOutputFile==""){
+    NameOutputFile=paste0("Description_of_",deparse(substitute(Dataset)))
   }
+  
+  ## Directory
+  diroutput<-paste0(PathOutputFolder,"/",NameOutputFile,".html")
   
   ## Create folders
   suppressWarnings(if (!file.exists(PathOutputFolder)) dir.create(file.path( PathOutputFolder)))
   
   ## title of the html file (title) and list of object to be printed (description)
-  title <- h2(NameDataset)
+  title <- h2(deparse(substitute(Dataset)))
   description <- list()
   
   ## Head
@@ -66,6 +60,7 @@ DescribeThisDataset<-function(PathDataset,
   #description <- list(description, p("Structure of the dataset:"), tableHTML(structure), p(""))
   
   ## Dimension of the dataset
+  
   Database_dim<-dim(Dataset)
   n_of_observations<-Database_dim[1]
   n_of_variables<-Database_dim[2]
@@ -74,6 +69,7 @@ DescribeThisDataset<-function(PathDataset,
                                             " observations of ", n_of_variables, " variables.")), p(""))
   
   ## Table Output
+  
   df_output<- data.frame(matrix(ncol = n_of_variables, nrow = 2))
   colnames(df_output)<-names(Dataset)
   rownames(df_output)<-c("unique_count", "missing_count")

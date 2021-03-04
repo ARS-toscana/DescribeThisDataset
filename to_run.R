@@ -6,14 +6,18 @@ thisdir<-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 thisdir<-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 source(paste0(thisdir,"/DescribeThisDataset.R"))
-# TEst run function:
 
-DescribeThisDataset(PathDataset=paste0(thisdir,"/input"),
-                    NameDataset="mtcars",
-                    ExtensionDataset=".csv",
+#Example
+
+data(mtcars)
+Dataset=data.table(mtcars)
+
+# Call 
+
+DescribeThisDataset(Dataset=Dataset,
                     Individual=T,
-                    Cols,
+                    #Cols=list(),
                     HeadOfDataset=TRUE,
                     PathOutputFolder=paste0(thisdir,"/g_describeHTML/"),
-                    NameOutputFile="first_mtcars"
+                    NameOutputFile=""
 )
