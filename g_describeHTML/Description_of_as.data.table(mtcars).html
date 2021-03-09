@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<script src="lib/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="lib/plotly-binding-4.9.3/plotly.js"></script>
+<script src="lib/typedarray-0.1/typedarray.min.js"></script>
+<script src="lib/jquery-3.5.1/jquery.min.js"></script>
+<link href="lib/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="lib/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="lib/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="lib/plotly-main-1.57.1/plotly-latest.min.js"></script>
+
+</head>
+<body>
+<h1>as.data.table(mtcars)</h1>
+<p>The database is composed by 32 observations of 11 variables.</p>
+<p></p>
+<h4>Head of the dataset:</h4>
+
+<table style="border-collapse:collapse;" class=table_1100 border=1>
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<thead>
+<tr style="background-color:#f2f2f2;">
+  <th id="tableHTML_header_1"> </th>
+  <th id="tableHTML_header_2">mpg</th>
+  <th id="tableHTML_header_3">cyl</th>
+  <th id="tableHTML_header_4">disp</th>
+  <th id="tableHTML_header_5">hp</th>
+  <th id="tableHTML_header_6">drat</th>
+  <th id="tableHTML_header_7">wt</th>
+  <th id="tableHTML_header_8">qsec</th>
+  <th id="tableHTML_header_9">vs</th>
+  <th id="tableHTML_header_10">am</th>
+  <th id="tableHTML_header_11">gear</th>
+  <th id="tableHTML_header_12">carb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td id="tableHTML_rownames">1</td>
+  <td id="tableHTML_column_1">21</td>
+  <td id="tableHTML_column_2">6</td>
+  <td id="tableHTML_column_3">160</td>
+  <td id="tableHTML_column_4">110</td>
+  <td id="tableHTML_column_5">3.9</td>
+  <td id="tableHTML_column_6">2.62</td>
+  <td id="tableHTML_column_7">16.46</td>
+  <td id="tableHTML_column_8">0</td>
+  <td id="tableHTML_column_9">1</td>
+  <td id="tableHTML_column_10">4</td>
+  <td id="tableHTML_column_11">4</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">2</td>
+  <td id="tableHTML_column_1">21</td>
+  <td id="tableHTML_column_2">6</td>
+  <td id="tableHTML_column_3">160</td>
+  <td id="tableHTML_column_4">110</td>
+  <td id="tableHTML_column_5">3.9</td>
+  <td id="tableHTML_column_6">2.875</td>
+  <td id="tableHTML_column_7">17.02</td>
+  <td id="tableHTML_column_8">0</td>
+  <td id="tableHTML_column_9">1</td>
+  <td id="tableHTML_column_10">4</td>
+  <td id="tableHTML_column_11">4</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">3</td>
+  <td id="tableHTML_column_1">22.8</td>
+  <td id="tableHTML_column_2">4</td>
+  <td id="tableHTML_column_3">108</td>
+  <td id="tableHTML_column_4">93</td>
+  <td id="tableHTML_column_5">3.85</td>
+  <td id="tableHTML_column_6">2.32</td>
+  <td id="tableHTML_column_7">18.61</td>
+  <td id="tableHTML_column_8">1</td>
+  <td id="tableHTML_column_9">1</td>
+  <td id="tableHTML_column_10">4</td>
+  <td id="tableHTML_column_11">1</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">4</td>
+  <td id="tableHTML_column_1">21.4</td>
+  <td id="tableHTML_column_2">6</td>
+  <td id="tableHTML_column_3">258</td>
+  <td id="tableHTML_column_4">110</td>
+  <td id="tableHTML_column_5">3.08</td>
+  <td id="tableHTML_column_6">3.215</td>
+  <td id="tableHTML_column_7">19.44</td>
+  <td id="tableHTML_column_8">1</td>
+  <td id="tableHTML_column_9">0</td>
+  <td id="tableHTML_column_10">3</td>
+  <td id="tableHTML_column_11">1</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">5</td>
+  <td id="tableHTML_column_1">18.7</td>
+  <td id="tableHTML_column_2">8</td>
+  <td id="tableHTML_column_3">360</td>
+  <td id="tableHTML_column_4">175</td>
+  <td id="tableHTML_column_5">3.15</td>
+  <td id="tableHTML_column_6">3.44</td>
+  <td id="tableHTML_column_7">17.02</td>
+  <td id="tableHTML_column_8">0</td>
+  <td id="tableHTML_column_9">0</td>
+  <td id="tableHTML_column_10">3</td>
+  <td id="tableHTML_column_11">2</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">6</td>
+  <td id="tableHTML_column_1">18.1</td>
+  <td id="tableHTML_column_2">6</td>
+  <td id="tableHTML_column_3">225</td>
+  <td id="tableHTML_column_4">105</td>
+  <td id="tableHTML_column_5">2.76</td>
+  <td id="tableHTML_column_6">3.46</td>
+  <td id="tableHTML_column_7">20.22</td>
+  <td id="tableHTML_column_8">1</td>
+  <td id="tableHTML_column_9">0</td>
+  <td id="tableHTML_column_10">3</td>
+  <td id="tableHTML_column_11">1</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<h4>Structure of the dataset:</h4>
+
+<table style="border-collapse:collapse;" class=table_6610 border=1>
+<thead>
+<tr style="background-color:#f2f2f2;">
+  <th id="tableHTML_header_1"> </th>
+  <th id="tableHTML_header_2">V1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td id="tableHTML_rownames">1</td>
+  <td id="tableHTML_column_1"> $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">2</td>
+  <td id="tableHTML_column_1"> $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">3</td>
+  <td id="tableHTML_column_1"> $ disp: num  160 160 108 258 360 ...</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">4</td>
+  <td id="tableHTML_column_1"> $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">5</td>
+  <td id="tableHTML_column_1"> $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">6</td>
+  <td id="tableHTML_column_1"> $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">7</td>
+  <td id="tableHTML_column_1"> $ qsec: num  16.5 17 18.6 19.4 17 ...</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">8</td>
+  <td id="tableHTML_column_1"> $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">9</td>
+  <td id="tableHTML_column_1"> $ am  : num  1 1 1 0 0 0 0 0 0 0 ...</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">10</td>
+  <td id="tableHTML_column_1"> $ gear: num  4 4 4 3 3 3 3 4 4 4 ...</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">11</td>
+  <td id="tableHTML_column_1"> $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<h4>Missing and Unique values:</h4>
+
+<table style="border-collapse:collapse;" class=table_5162 border=1>
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<col width="70">
+<thead>
+<tr style="background-color:#f2f2f2;">
+  <th id="tableHTML_header_1"> </th>
+  <th id="tableHTML_header_2">mpg</th>
+  <th id="tableHTML_header_3">cyl</th>
+  <th id="tableHTML_header_4">disp</th>
+  <th id="tableHTML_header_5">hp</th>
+  <th id="tableHTML_header_6">drat</th>
+  <th id="tableHTML_header_7">wt</th>
+  <th id="tableHTML_header_8">qsec</th>
+  <th id="tableHTML_header_9">vs</th>
+  <th id="tableHTML_header_10">am</th>
+  <th id="tableHTML_header_11">gear</th>
+  <th id="tableHTML_header_12">carb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td id="tableHTML_rownames">missing_count</td>
+  <td id="tableHTML_column_1">0</td>
+  <td id="tableHTML_column_2">0</td>
+  <td id="tableHTML_column_3">0</td>
+  <td id="tableHTML_column_4">0</td>
+  <td id="tableHTML_column_5">0</td>
+  <td id="tableHTML_column_6">0</td>
+  <td id="tableHTML_column_7">0</td>
+  <td id="tableHTML_column_8">0</td>
+  <td id="tableHTML_column_9">0</td>
+  <td id="tableHTML_column_10">0</td>
+  <td id="tableHTML_column_11">0</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">missing_percent</td>
+  <td id="tableHTML_column_1">0</td>
+  <td id="tableHTML_column_2">0</td>
+  <td id="tableHTML_column_3">0</td>
+  <td id="tableHTML_column_4">0</td>
+  <td id="tableHTML_column_5">0</td>
+  <td id="tableHTML_column_6">0</td>
+  <td id="tableHTML_column_7">0</td>
+  <td id="tableHTML_column_8">0</td>
+  <td id="tableHTML_column_9">0</td>
+  <td id="tableHTML_column_10">0</td>
+  <td id="tableHTML_column_11">0</td>
+</tr>
+<tr>
+  <td id="tableHTML_rownames">unique_count</td>
+  <td id="tableHTML_column_1">25</td>
+  <td id="tableHTML_column_2">3</td>
+  <td id="tableHTML_column_3">27</td>
+  <td id="tableHTML_column_4">22</td>
+  <td id="tableHTML_column_5">22</td>
+  <td id="tableHTML_column_6">29</td>
+  <td id="tableHTML_column_7">30</td>
+  <td id="tableHTML_column_8">2</td>
+  <td id="tableHTML_column_9">2</td>
+  <td id="tableHTML_column_10">3</td>
+  <td id="tableHTML_column_11">6</td>
+</tr>
+<tr style="background-color:#f2f2f2;">
+  <td id="tableHTML_rownames">unique_rate</td>
+  <td id="tableHTML_column_1">0.78</td>
+  <td id="tableHTML_column_2">0.09</td>
+  <td id="tableHTML_column_3">0.84</td>
+  <td id="tableHTML_column_4">0.69</td>
+  <td id="tableHTML_column_5">0.69</td>
+  <td id="tableHTML_column_6">0.91</td>
+  <td id="tableHTML_column_7">0.94</td>
+  <td id="tableHTML_column_8">0.06</td>
+  <td id="tableHTML_column_9">0.06</td>
+  <td id="tableHTML_column_10">0.09</td>
+  <td id="tableHTML_column_11">0.19</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<h4>Bar graph of cyl defined as categorical:</h4>
+<div id="htmlwidget-5740a9844e485cb729ba" style="width:100%;height:400px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5740a9844e485cb729ba">{"x":{"data":[{"orientation":"v","width":[1.8,1.8,1.8],"base":[0,0,0],"x":[4,6,8],"y":[11,7,14],"text":["count: 11<br />cyl: 4","count:  7<br />cyl: 6","count: 14<br />cyl: 8"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(89,89,89,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.4499766741592,"r":7.30593607305936,"b":40.4043145737026,"l":37.2602739726027},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[2.81,9.19],"tickmode":"array","ticktext":["3","4","5","6","7","8","9"],"tickvals":[3,4,5,6,7,8,9],"categoryorder":"array","categoryarray":["3","4","5","6","7","8","9"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"cyl","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.7,14.7],"tickmode":"array","ticktext":["0","5","10"],"tickvals":[0,5,10],"categoryorder":"array","categoryarray":["0","5","10"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"count","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"39837d1825b":{"x":{},"type":"bar"}},"cur_data":"39837d1825b","visdat":{"39837d1825b":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p></p>
+<h4>Histogram and Box Plot of hp defined as continuous:</h4>
+<div id="htmlwidget-9392ca5efcabab043698" style="width:100%;height:400px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9392ca5efcabab043698">{"x":{"data":[{"orientation":"v","width":[9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965517,9.75862068965512,9.75862068965512,9.75862068965512,9.75862068965512,9.75862068965512,9.75862068965512,9.75862068965512,9.75862068965512],"base":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"x":[48.7931034482759,58.551724137931,68.3103448275862,78.0689655172414,87.8275862068966,97.5862068965517,107.344827586207,117.103448275862,126.862068965517,136.620689655172,146.379310344828,156.137931034483,165.896551724138,175.655172413793,185.413793103448,195.172413793103,204.931034482759,214.689655172414,224.448275862069,234.206896551724,243.965517241379,253.724137931035,263.48275862069,273.241379310345,283,292.758620689655,302.51724137931,312.275862068965,322.034482758621,331.793103448276],"y":[1,1,3,0,1,3,5,1,2,0,2,0,0,6,0,0,1,1,0,1,2,0,1,0,0,0,0,0,0,1],"text":["count: 1<br />hp:  48.79310","count: 1<br />hp:  58.55172","count: 3<br />hp:  68.31034","count: 0<br />hp:  78.06897","count: 1<br />hp:  87.82759","count: 3<br />hp:  97.58621","count: 5<br />hp: 107.34483","count: 1<br />hp: 117.10345","count: 2<br />hp: 126.86207","count: 0<br />hp: 136.62069","count: 2<br />hp: 146.37931","count: 0<br />hp: 156.13793","count: 0<br />hp: 165.89655","count: 6<br />hp: 175.65517","count: 0<br />hp: 185.41379","count: 0<br />hp: 195.17241","count: 1<br />hp: 204.93103","count: 1<br />hp: 214.68966","count: 0<br />hp: 224.44828","count: 1<br />hp: 234.20690","count: 2<br />hp: 243.96552","count: 0<br />hp: 253.72414","count: 1<br />hp: 263.48276","count: 0<br />hp: 273.24138","count: 0<br />hp: 283.00000","count: 0<br />hp: 292.75862","count: 0<br />hp: 302.51724","count: 0<br />hp: 312.27586","count: 0<br />hp: 322.03448","count: 1<br />hp: 331.79310"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(89,89,89,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"y":[110,110,93,110,175,105,245,62,95,123,123,180,180,180,205,215,230,66,52,65,97,150,150,245,175,66,91,113,264,175,335,109],"hoverinfo":"y","type":"box","fillcolor":"rgba(255,255,255,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"showlegend":false,"xaxis":"x2","yaxis":"y2","frame":null}],"layout":{"xaxis":{"domain":[0,0.48],"automargin":true,"type":"linear","autorange":false,"range":[29.2758620689655,351.310344827586],"tickmode":"array","ticktext":["100","200","300"],"tickvals":[100,200,300],"categoryorder":"array","categoryarray":["100","200","300"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","hoverformat":".2f"},"xaxis2":{"domain":[0.52,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.4125,0.4125],"tickmode":"array","ticktext":["-0.4","-0.2","0.0","0.2","0.4"],"tickvals":[-0.4,-0.2,0,0.2,0.4],"categoryorder":"array","categoryarray":["-0.4","-0.2","0.0","0.2","0.4"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y2","hoverformat":".2f"},"yaxis2":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[37.85,349.15],"tickmode":"array","ticktext":["100","200","300"],"tickvals":[100,200,300],"categoryorder":"array","categoryarray":["100","200","300"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x2","hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.3,6.3],"tickmode":"array","ticktext":["0","2","4","6"],"tickvals":[0,2,4,6],"categoryorder":"array","categoryarray":["0","2","4","6"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","hoverformat":".2f"},"annotations":[],"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":0.48,"y0":0,"y1":1},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0.52,"x1":1,"y0":0,"y1":1}],"images":[],"margin":{"t":26.4499766741592,"r":7.30593607305936,"b":25.7924424275839,"l":43.1050228310502},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"attrs":{"39870fa2c0":{"x":{},"type":"bar"},"3985a2fd0b3":{"y":{},"type":"box"}},"source":"A","config":{"doubleClick":"reset","showSendToCloud":false},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"subplot":true,"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p></p>
+</body>
+</html>
