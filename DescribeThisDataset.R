@@ -8,7 +8,8 @@
 #' @param individual (boolean, default=TRUE). If TRUE, the dataset is at individual level, otherwise it is an aggregate dataset.
 #' @param Cols (list, default=ALL) list of names of the columns to be described.
 #' @param ColsFormat (list, default=list()) list of the format of the columns to be described. 
-#' @param HeadOfDataset (boolean, default=TRUE) caption of head of datasets (first 5 rows of dataset)
+#' @param HeadOfDataset (boolean, default=FALSE) caption of head of datasets (first 5 rows of dataset)
+#' @param DetailInformation (boolean, default=FALSE) add also figure in the output
 #' @param StructureOfDataset (boolean, default=TRUE) if TRUE returns the output of the "struct" function
 #' @param PathOutputFolder (str, default= paste0(thisdir,"/g_describeHTML")) name of output folder in which HTLM file is saved.
 #' @param NameOutputFile (str, default=’Description_of_NameDataset’)  name of HTML file.
@@ -19,7 +20,8 @@ DescribeThisDataset<-function(Dataset,
                               Individual,
                               Cols=list(),
                               ColsFormat=list(),
-                              HeadOfDataset=TRUE,
+                              HeadOfDataset=FALSE,
+                              DetailInformation=FALSE,
                               StructureOfDataset=TRUE,
                               PathOutputFolder="",
                               NameOutputFile=""
@@ -165,6 +167,7 @@ DescribeThisDataset<-function(Dataset,
         }
       }else{          ############### Description of the selected vars (with declares format)
         
+        ## To be check if the format is correct in the vars
         if(ColsFormat[form_iteration]=="binary"){
           
           p=ggplot(Dataset, aes_string(x=i))+
