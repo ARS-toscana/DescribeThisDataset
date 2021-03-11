@@ -5,7 +5,8 @@
 #'
 #'
 #' @param Dataset (data.table/data.frame) a dataset to be described.
-#' @param individual (boolean, default=TRUE). If TRUE, the dataset is at individual level, otherwise it is an aggregate dataset.
+#' @param Individual (boolean, default=TRUE). If TRUE, the dataset is at individual level, otherwise it is an aggregate dataset.
+#' @param ColumnN (string): if individual is FALSE, this is the name of the column that contains the weight of the row
 #' @param Cols (list, default=ALL) list of names of the columns to be described.
 #' @param ColsFormat (list, default=list()) list of the format of the columns to be described. 
 #' @param HeadOfDataset (boolean, default=FALSE) caption of head of datasets (first 5 rows of dataset)
@@ -18,6 +19,7 @@
 
 DescribeThisDataset<-function(Dataset,
                               Individual,
+                              #ColumnN,
                               Cols=list(),
                               ColsFormat=list(),
                               HeadOfDataset=FALSE,
