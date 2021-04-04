@@ -1,0 +1,35 @@
+---
+title: "DescribeThisDataset"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+```{r}
+  if (!require("ggplot2")) install.packages("ggplot2") 
+  library(ggplot2)
+  if (!require("plotly")) install.packages("plotly")
+  library(plotly)
+  if (!require("rstudioapi")) install.packages("rstudioapi")
+  library(rstudioapi)
+  if (!require("data.table")) install.packages("data.table")
+  library(data.table)
+  
+data(cars)
+Dataset=data.table(mtcars)
+Dataset$am=ifelse(Dataset$am==1, "one", "zero")
+Dataset$vs=ifelse(Dataset$vs==1, TRUE, FALSE)
+Database_dim<-dim(Dataset)
+n_of_observations<-Database_dim[1]
+n_of_variables<-Database_dim[2]
+description <- paste0("The database is composed by ", n_of_observations, " observations of ", n_of_variables, " variables.")
+```
+ 
+ 
+scritta `r print(description)`
+
+## Including Plots
+
