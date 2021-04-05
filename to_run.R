@@ -10,18 +10,25 @@ source(paste0(thisdir,"/DescribeThisDataset.R"))
 #Example
 
 data(mtcars)
-Dataset=data.table(mtcars)
-Dataset$am=ifelse(Dataset$am==1, "one", "zero")
-Dataset$vs=ifelse(Dataset$vs==1, TRUE, FALSE)
+Cars_Data=data.table(mtcars)
+Cars_Data$am=ifelse(Dataset$am==1, "one", "zero")
+Cars_Data$vs=ifelse(Dataset$vs==1, TRUE, FALSE)
 
 # Call 
 library(rmarkdown)
-render("DescribeThisDataset.Rmd", params=list(Dataset=Dataset,
-                                            Individual=T,
-                                            HeadOfDataset=TRUE,
-                                            StructureOfDataset=TRUE,
-                                            PathOutputFolder=paste0(thisdir,"/g_describeHTML/"),
-                                            NameOutputFile="Description of the Dataset")
-)
+
+# Directories
+PathOutputFolder=paste0(thisdir,"/g_describeHTML")
+suppressWarnings(if (!file.exists(PathOutputFolder)) dir.create(file.path( PathOutputFolder)))
+
+render("DescribeThisDataset.Rmd",           
+       output_dir=PathOutputFolder,
+       output_file="Dataset_description", 
+       params=list(Dataset=Cars_Data,
+                   Individual=T,
+                   HeadOfDataset=TRUE,
+                   StructureOfDataset=TRUE,
+                   NameOutputFile="Description of the Dataset")
+)               
 
 

@@ -17,7 +17,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ## `r deparse(substitute(Dataset))`
 
 ```{r first, echo=FALSE}
-
   Dataset= params$Dataset
   Individual= params$Individual
   HeadOfDataset= params$HeadOfDataset
@@ -29,7 +28,6 @@ knitr::opts_chunk$set(echo = TRUE)
   if(!is.data.table(Dataset)){
     Dataset=data.table(Dataset)
   }
-  
   
   ## Name output
   if(NameOutputFile==""){

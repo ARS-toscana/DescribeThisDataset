@@ -192,44 +192,197 @@ summary {
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<pre class="r"><code>  if (!require(&quot;ggplot2&quot;)) install.packages(&quot;ggplot2&quot;) </code></pre>
-<pre><code>## Loading required package: ggplot2</code></pre>
-<pre class="r"><code>  library(ggplot2)
-  if (!require(&quot;plotly&quot;)) install.packages(&quot;plotly&quot;)</code></pre>
-<pre><code>## Loading required package: plotly</code></pre>
-<pre><code>## 
-## Attaching package: &#39;plotly&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     last_plot</code></pre>
-<pre><code>## The following object is masked from &#39;package:stats&#39;:
-## 
-##     filter</code></pre>
-<pre><code>## The following object is masked from &#39;package:graphics&#39;:
-## 
-##     layout</code></pre>
-<pre class="r"><code>  library(plotly)
-  if (!require(&quot;rstudioapi&quot;)) install.packages(&quot;rstudioapi&quot;)</code></pre>
-<pre><code>## Loading required package: rstudioapi</code></pre>
-<pre class="r"><code>  library(rstudioapi)
-  if (!require(&quot;data.table&quot;)) install.packages(&quot;data.table&quot;)</code></pre>
-<pre><code>## Loading required package: data.table</code></pre>
-<pre class="r"><code>  library(data.table)
-  
-data(cars)
-Dataset=data.table(mtcars)
-Dataset$am=ifelse(Dataset$am==1, &quot;one&quot;, &quot;zero&quot;)
-Dataset$vs=ifelse(Dataset$vs==1, TRUE, FALSE)
-Database_dim&lt;-dim(Dataset)
-n_of_observations&lt;-Database_dim[1]
-n_of_variables&lt;-Database_dim[2]
-description &lt;- paste0(&quot;The database is composed by &quot;, n_of_observations, &quot; observations of &quot;, n_of_variables, &quot; variables.&quot;)</code></pre>
-<p>scritta</p>
-</div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
+<div id="dataset" class="section level2">
+<h2>Dataset</h2>
+<p>This is a description of Dataset. The dataset is composed by 32 observations of 11 variables.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">mpg</th>
+<th align="right">cyl</th>
+<th align="right">disp</th>
+<th align="right">hp</th>
+<th align="right">drat</th>
+<th align="right">wt</th>
+<th align="right">qsec</th>
+<th align="right">vs</th>
+<th align="right">am</th>
+<th align="right">gear</th>
+<th align="right">carb</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">missing_count</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">missing_percent</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">unique_count</td>
+<td align="right">25.00</td>
+<td align="right">3.00</td>
+<td align="right">27.00</td>
+<td align="right">22.00</td>
+<td align="right">22.00</td>
+<td align="right">29.00</td>
+<td align="right">30.00</td>
+<td align="right">2.00</td>
+<td align="right">2.00</td>
+<td align="right">3.00</td>
+<td align="right">6.00</td>
+</tr>
+<tr class="even">
+<td align="left">unique_rate</td>
+<td align="right">0.78</td>
+<td align="right">0.09</td>
+<td align="right">0.84</td>
+<td align="right">0.69</td>
+<td align="right">0.69</td>
+<td align="right">0.91</td>
+<td align="right">0.94</td>
+<td align="right">0.06</td>
+<td align="right">0.06</td>
+<td align="right">0.09</td>
+<td align="right">0.19</td>
+</tr>
+</tbody>
+</table>
+<p>This is the head of the dataset</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">mpg</th>
+<th align="right">cyl</th>
+<th align="right">disp</th>
+<th align="right">hp</th>
+<th align="right">drat</th>
+<th align="right">wt</th>
+<th align="right">qsec</th>
+<th align="right">vs</th>
+<th align="right">am</th>
+<th align="right">gear</th>
+<th align="right">carb</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">21.0</td>
+<td align="right">6</td>
+<td align="right">160</td>
+<td align="right">110</td>
+<td align="right">3.90</td>
+<td align="right">2.620</td>
+<td align="right">16.46</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">21.0</td>
+<td align="right">6</td>
+<td align="right">160</td>
+<td align="right">110</td>
+<td align="right">3.90</td>
+<td align="right">2.875</td>
+<td align="right">17.02</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">22.8</td>
+<td align="right">4</td>
+<td align="right">108</td>
+<td align="right">93</td>
+<td align="right">3.85</td>
+<td align="right">2.320</td>
+<td align="right">18.61</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">21.4</td>
+<td align="right">6</td>
+<td align="right">258</td>
+<td align="right">110</td>
+<td align="right">3.08</td>
+<td align="right">3.215</td>
+<td align="right">19.44</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">18.7</td>
+<td align="right">8</td>
+<td align="right">360</td>
+<td align="right">175</td>
+<td align="right">3.15</td>
+<td align="right">3.440</td>
+<td align="right">17.02</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">18.1</td>
+<td align="right">6</td>
+<td align="right">225</td>
+<td align="right">105</td>
+<td align="right">2.76</td>
+<td align="right">3.460</td>
+<td align="right">20.22</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>This is the structure of the dataset</p>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;</code></pre>
 </div>
 
 
