@@ -6,49 +6,42 @@ params:
   Individual: TRUE
   HeadOfDataset: FALSE
   StructureOfDataset: FALSE
-  PathOutputFolder: ""
-  NameOutputFile: ""
+  NameOfDataset: "Dataset"
+  Cols: list(),
+  ColsFormat: list()
+  DetailInformation: TRUE
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## `r deparse(substitute(Dataset))`
+```{r library, include=FALSE}
+  if (!require("ggplot2")) install.packages("ggplot2") 
+  library(ggplot2)
+  if (!require("data.table")) install.packages("data.table")
+  library(data.table)
+```
 
-```{r first, echo=FALSE}
+```{r Diagnosi, echo=FALSE}
   Dataset= params$Dataset
   Individual= params$Individual
   HeadOfDataset= params$HeadOfDataset
   StructureOfDataset= params$StructureOfDataset
-  PathOutputFolder= params$PathOutputFolder
-  NameOutputFile= params$NameOutputFile
+  NameOfDataset= params$NameOfDataset
+  Cols=params$Cols
+  ColsFormat=params$ColsFormat
   
   ## Datatable
   if(!is.data.table(Dataset)){
     Dataset=data.table(Dataset)
   }
   
-  ## Name output
-  if(NameOutputFile==""){
-    NameOutputFile=paste0("Description_of_",deparse(substitute(Dataset)))
-  }
-  
-  ## Directory
-  if(PathOutputFolder==""){
-    thisdir<-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
-    thisdir<-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
-    PathOutputFolder=paste0(thisdir,"/g_describeHTML")
-  }
-  diroutput<-paste0(PathOutputFolder,"/",NameOutputFile,".html")
-  
-  ## Create folders
-  suppressWarnings(if (!file.exists(PathOutputFolder)) dir.create(file.path( PathOutputFolder)))
-  
   ## Dimension of the dataset
   Database_dim<-dim(Dataset)
   n_of_observations<-Database_dim[1]
   n_of_variables<-Database_dim[2]
+  
   ## Table Output
   row_of_df_output=4
   df_output<- data.frame(matrix(ncol = n_of_variables, nrow = row_of_df_output))
@@ -63,28 +56,157 @@ knitr::opts_chunk$set(echo = TRUE)
   }
 ```
 
-This is a description of `r deparse(substitute(Dataset))`. The dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
+```{r check, echo=FALSE}
+## check that Cols and ColsFormat is a list 
+if (!inherits(Cols, "list")){  
+  stop("parameter Cols must be a list")
+}
 
+if (!inherits(ColsFormat, "list")){  
+  stop("parameter ColsFormat must be a list")
+}
+
+## check if Cols and ColsFormat have the same length
+if (length(Cols)!=length(ColsFormat)){  
+  stop("parameter Cols must have the same length as ColsFormat")
+}
+```
+
+This is a description of  **`r NameOfDataset`**, this dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
 ```{r DF_output, include=TRUE, echo=FALSE}
-knitr::kable(df_output)
+knitr::kable(df_output, caption = "Missing and Unique diagnosi")
 ```
  
-`r if(HeadOfDataset){"This is the head of the dataset"}`
-
 ```{r Head, include=TRUE, echo=FALSE}
-  ## Head
   if(HeadOfDataset==TRUE){
-    knitr::kable(head(Dataset))
+    knitr::kable(head(Dataset),  caption = "Head of the dataset")
   }
 ```
 
 `r if(StructureOfDataset){"This is the structure of the dataset"}`
-
 ```{r Structure, include=TRUE, echo=FALSE}
-  ## Structure
   if(StructureOfDataset){
     str(Dataset)
   }
 ```
- 
 
+```{r Boolean Definition, include=TRUE, echo=FALSE}
+  nVars_nForm = length(Cols)==0 & length(ColsFormat)==0 
+  Vars_nForm = length(Cols)!=0 & length(ColsFormat)==0 
+  Vars_Form_nDet = length(Cols)!=0 & length(ColsFormat)!=0 & !DetailInformation 
+  Vars_Form_Det = length(Cols)!=0 & length(ColsFormat)!=0 & !DetailInformation 
+```
+
+`r if(nVars_nForm){"The variables and their format are not specified"}`
+```{r Vars and Format non specified, include=TRUE, echo=FALSE}
+if(nVars_nForm){  
+  for(i in names(Dataset)){
+    if(df_output["unique_count",i]<=10){
+      p = ggplot(Dataset, aes_string(x=i))+
+           geom_bar()+
+           ggtitle(paste0("Bar graph of ",i, ":"))
+      suppressMessages(print(p))
+    }
+    if(df_output["unique_count",i]>10 & df_output["unique_count",i]<=50){
+      p = ggplot(Dataset, aes_string(x=i))+
+            geom_histogram()+
+            ggtitle(paste0("Histogram of ",i, ":"))
+      suppressMessages(print(p))
+    }
+    if(df_output["unique_count",i]>50){
+      p = ggplot(Dataset, aes_string(x=i))+
+           geom_density()+
+           ggtitle(paste0("Density of ",i, ":"))
+      suppressMessages(print(p))
+      }
+  }
+}
+```
+
+`r if(Vars_nForm){"The format of the variable is not specified"}`
+```{r Vars specified and Format non specified, include=TRUE, echo=FALSE}
+if(Vars_nForm){
+  for(i in Cols){
+        if(df_output["unique_count",i]<=10){
+          p = ggplot(Dataset, aes_string(x=i))+
+               geom_bar()+
+               ggtitle(paste0("Bar graph of ",i, ":"))
+          suppressMessages(print(p))
+        }
+        if(df_output["unique_count",i]>10 & df_output["unique_count",i]<=50){
+          p = ggplot(Dataset, aes_string(x=i))+
+              geom_histogram()+
+              ggtitle(paste0("Histogram of ",i, ":"))
+          suppressMessages(print(p))
+        }
+        if(df_output["unique_count",i]>50){
+          p = ggplot(Dataset, aes_string(x=i))+
+               geom_density()+
+               ggtitle(paste0("Density of ",i, ":"))
+          suppressMessages(print(p))
+        }
+  }
+}
+```
+
+`r if(Vars_Form_Det){"The variables to be described and their formats are specified"}`
+```{r Vars specified and Format specified and Detailed, include=TRUE, echo=FALSE}
+if(Vars_Form_Det){
+    form_iteration=1
+    for(i in Cols){
+      if(ColsFormat[form_iteration]=="binary"){
+        p=ggplot(Dataset, aes_string(x=i))+
+          geom_bar()+
+          ggtitle(paste0("Bar graph of ",i, " defined as binary:"))
+        suppressMessages(print(p))
+      }
+      if(ColsFormat[form_iteration]=="categorical"){
+        p=ggplot(Dataset, aes_string(x=i))+
+          geom_bar()+
+          ggtitle(paste0("Bar graph of ",i, " defined as categorical:"))
+        suppressMessages(print(p))
+      }
+      if(ColsFormat[form_iteration]=="continuous"){
+        p1=ggplot(Dataset, aes_string(x=i))+
+          geom_histogram()+
+          ggtitle(paste0("Histogram of ",i, " defined as continuous:"))
+        suppressMessages(print(p1))
+        
+        p2=ggplot(Dataset, aes_string(y=i))+
+        geom_boxplot()+
+        ggtitle(paste0("Box Plot of ",i, " defined as continuous:"))
+        suppressMessages(print(p2))
+      }
+      if(ColsFormat[form_iteration]=="date"){
+        p=ggplot(Dataset, aes_string(x=i))+
+          geom_histogram()+
+          ggtitle(paste0("Histogram of ",i, " defined as date:"))
+        suppressMessages(print(p))
+      }
+    }
+      form_iteration=form_iteration+1
+    
+}
+```
+
+`r if(Vars_Form_nDet){"The variables to be described and their formats are specified"}`
+```{r Vars specified and Format specified and non Detailed, include=TRUE, echo=FALSE}
+if(Vars_Form_nDet){
+    form_iteration=1
+    for(i in Cols){
+      if(ColsFormat[form_iteration]=="binary"){
+
+      }
+      if(ColsFormat[form_iteration]=="categorical"){
+
+      }
+      if(ColsFormat[form_iteration]=="continuous"){
+
+      }
+      if(ColsFormat[form_iteration]=="date"){
+
+      }
+    }
+      form_iteration=form_iteration+1
+}
+```
