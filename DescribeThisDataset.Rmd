@@ -4,10 +4,11 @@ output: html_document
 params:
   Dataset: NULL
   Individual: TRUE
+  ColumnN: NULL
   HeadOfDataset: FALSE
   StructureOfDataset: FALSE
   NameOfDataset: "Dataset"
-  Cols: list(),
+  Cols: list()
   ColsFormat: list()
   DetailInformation: TRUE
 ---
@@ -31,6 +32,7 @@ knitr::opts_chunk$set(echo = TRUE)
   NameOfDataset= params$NameOfDataset
   Cols=params$Cols
   ColsFormat=params$ColsFormat
+  DetailInformation=params$DetailInformation
   
   ## Datatable
   if(!is.data.table(Dataset)){
@@ -73,6 +75,8 @@ if (length(Cols)!=length(ColsFormat)){
 ```
 
 This is a description of  **`r NameOfDataset`**, this dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
+
+### Diagnosi
 ```{r DF_output, include=TRUE, echo=FALSE}
 knitr::kable(df_output, caption = "Missing and Unique diagnosi")
 ```
@@ -94,7 +98,7 @@ knitr::kable(df_output, caption = "Missing and Unique diagnosi")
   nVars_nForm = length(Cols)==0 & length(ColsFormat)==0 
   Vars_nForm = length(Cols)!=0 & length(ColsFormat)==0 
   Vars_Form_nDet = length(Cols)!=0 & length(ColsFormat)!=0 & !DetailInformation 
-  Vars_Form_Det = length(Cols)!=0 & length(ColsFormat)!=0 & !DetailInformation 
+  Vars_Form_Det = length(Cols)!=0 & length(ColsFormat)!=0 & DetailInformation 
 ```
 
 `r if(nVars_nForm){"The variables and their format are not specified"}`
@@ -150,11 +154,27 @@ if(Vars_nForm){
 ```
 
 `r if(Vars_Form_Det){"The variables to be described and their formats are specified"}`
-```{r Vars specified and Format specified and Detailed, include=TRUE, echo=FALSE}
+```{r Vars specified and Format specified and Detailed, results = "asis", include=TRUE, echo=FALSE}
 if(Vars_Form_Det){
     form_iteration=1
     for(i in Cols){
       if(ColsFormat[form_iteration]=="binary"){
+        cat("\n")
+        cat(paste0("## Description of **", as.character(i), "**:"))
+        
+        compDataset=na.omit(Dataset)
+        
+        first_value = unique(compDataset[,get(i)])[1]
+        second_value = unique(compDataset[,get(i)])[2]
+        
+        prop_firs_value = dim(compDataset[get(i)==first_value,])[1]/n_of_observations*100
+        prop_second_value = dim(compDataset[get(i)==second_value,])[1]/n_of_observations*100
+        
+        DF_binary=data.frame(c(first_value, second_value, NA), c(prop_firs_value, prop_second_value, df_output[2,i] ))
+        cat("\n")
+        print(knitr::kable(DF_binary, col.names = c("values", "Proportion")))
+        cat("\n")
+        
         p=ggplot(Dataset, aes_string(x=i))+
           geom_bar()+
           ggtitle(paste0("Bar graph of ",i, " defined as binary:"))
@@ -189,13 +209,28 @@ if(Vars_Form_Det){
 }
 ```
 
-`r if(Vars_Form_nDet){"The variables to be described and their formats are specified"}`
-```{r Vars specified and Format specified and non Detailed, include=TRUE, echo=FALSE}
+`r if(Vars_Form_nDet){"The variables to be described and their formats are specified."}`
+```{r Vars specified and Format specified and non Detailed, results = "asis", include=TRUE, echo=FALSE}
 if(Vars_Form_nDet){
     form_iteration=1
     for(i in Cols){
       if(ColsFormat[form_iteration]=="binary"){
-
+        cat("\n")
+        cat(paste0("Table of **", as.character(i), "**:"))
+        
+        compDataset=na.omit(Dataset)
+        
+        first_value = unique(compDataset[,get(i)])[1]
+        second_value = unique(compDataset[,get(i)])[2]
+        
+        prop_firs_value = dim(compDataset[get(i)==first_value,])[1]/n_of_observations*100
+        prop_second_value = dim(compDataset[get(i)==second_value,])[1]/n_of_observations*100
+        
+        DF_binary=data.frame(c(first_value, second_value, NA), c(prop_firs_value, prop_second_value, df_output[2,i] ))
+        cat("\n")
+        print(knitr::kable(DF_binary, col.names = c("values", "Proportion")))
+        cat("\n")
+        
       }
       if(ColsFormat[form_iteration]=="categorical"){
 
