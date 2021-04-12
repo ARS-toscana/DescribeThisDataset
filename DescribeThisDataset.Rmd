@@ -83,7 +83,6 @@ if (length(Cols)!=length(ColsFormat)){
 for(i in names(Dataset)){}
 ```
 
-
 This is a description of  **`r NameOfDataset`**, this dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
 
 ### Diagnosi
@@ -214,6 +213,16 @@ if(Vars_Form_Det){
         cat("\n")
         cat(paste0("## Description of **", as.character(i), "**:"))
         cat("\n")
+        
+        quantile_table=quantile(Dataset[,get(i)], probs = seq(0, 1, 0.25), na.rm = FALSE)
+        var_mean= mean(Dataset[,get(i)], na.rm=TRUE)
+        quantile_table=append(quantile_table, var_mean)
+        names(quantile_table)=c("Minimum",   "25th Percentile ",  "Median",  "75th Percentile",  "Maximum", "Mean") 
+        
+        cat("\n")
+        print(knitr::kable(quantile_table, col.names = c( "Value"),  caption = "Mean and Percentile table"))
+        cat("\n")
+        
         p1=ggplot(Dataset, aes_string(x=i))+
           geom_histogram()+
           ggtitle(paste0("Histogram of ",i, " defined as continuous:"))
@@ -307,6 +316,15 @@ if(Vars_Form_nDet){
       if(ColsFormat[form_iteration]=="continuous"){
         cat("\n")
         cat(paste0("Table of **", as.character(i), "**:"))
+        cat("\n")
+        
+        quantile_table=quantile(Dataset[,get(i)], probs = seq(0, 1, 0.25), na.rm = FALSE)
+        var_mean= mean(Dataset[,get(i)], na.rm=TRUE)
+        quantile_table=append(quantile_table, var_mean)
+        names(quantile_table)=c("Minimum",   "25th Percentile ",  "Median",  "75th Percentile",  "Maximum", "Mean") 
+        
+        cat("\n")
+        print(knitr::kable(quantile_table, col.names = c( "Value"),  caption = "Mean and Percentile table"))
         cat("\n")
 
       }
