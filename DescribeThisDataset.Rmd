@@ -1,0 +1,346 @@
+---
+title: "DescribeThisDataset"
+output: html_document
+params:
+  Dataset: NULL
+  Individual: TRUE
+  ColumnN: NULL
+  HeadOfDataset: FALSE
+  StructureOfDataset: FALSE
+  NameOfDataset: "Dataset"
+  Cols: list()
+  ColsFormat: list()
+  DetailInformation: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r library, include=FALSE}
+  if (!require("ggplot2")) install.packages("ggplot2") 
+  library(ggplot2)
+  if (!require("data.table")) install.packages("data.table")
+  library(data.table)
+```
+
+```{r parameters, include=FALSE}
+  Dataset= params$Dataset
+  Individual= params$Individual
+  HeadOfDataset= params$HeadOfDataset
+  StructureOfDataset= params$StructureOfDataset
+  NameOfDataset= params$NameOfDataset
+  Cols=params$Cols
+  ColsFormat=params$ColsFormat
+  DetailInformation=params$DetailInformation
+```
+  
+```{r first check, echo=FALSE}
+## check that Cols and ColsFormat is a list 
+if (!inherits(Cols, "list")){  
+  stop("parameter Cols must be a list")
+}
+
+if (!inherits(ColsFormat, "list")){  
+  stop("parameter ColsFormat must be a list")
+}
+
+## check if Cols and ColsFormat have the same length
+if (length(Cols)!=length(ColsFormat)){  
+  stop("parameter Cols must have the same length as ColsFormat")
+}
+```
+
+```{r Diagnosi, echo=FALSE}
+
+  ## Datatable
+  if(!is.data.table(Dataset)){
+    Dataset=data.table(Dataset)
+  }
+  
+  ## Dimension of the dataset
+  Database_dim<-dim(Dataset)
+  n_of_observations<-Database_dim[1]
+  n_of_variables<-Database_dim[2]
+  
+  ## Table Output
+  row_of_df_output=4
+  df_output<- data.frame(matrix(ncol = n_of_variables, nrow = row_of_df_output))
+  colnames(df_output)<-names(Dataset)
+  rownames(df_output)<-c("missing_count", "missing_percent", "unique_count", "unique_rate")
+  
+  for( i in names(Dataset)){
+    df_output[1,i]=sum(is.na(Dataset[,get(i)]))
+    df_output[2,i]=round((sum(is.na(Dataset[,get(i)]))/n_of_observations)*100, 2)
+    df_output[3,i]=length(unique(Dataset[,get(i)]))
+    df_output[4,i]=round(length(unique(Dataset[,get(i)]))/n_of_observations, 2)
+  }
+```
+
+
+```{r second check, echo=FALSE}
+## check if the format is correct
+for(i in names(Dataset)){}
+```
+
+
+This is a description of  **`r NameOfDataset`**, this dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
+
+### Diagnosi
+```{r DF_output, include=TRUE, echo=FALSE}
+knitr::kable(df_output, caption = "Missing and Unique diagnosi")
+```
+ 
+```{r Head, include=TRUE, echo=FALSE}
+  if(HeadOfDataset==TRUE){
+    knitr::kable(head(Dataset),  caption = "Head of the dataset")
+  }
+```
+
+`r if(StructureOfDataset){"This is the structure of the dataset"}`
+```{r Structure, include=TRUE, echo=FALSE}
+  if(StructureOfDataset){
+    str(Dataset)
+  }
+```
+
+```{r Boolean Definition, include=TRUE, echo=FALSE}
+  nVars_nForm = length(Cols)==0 & length(ColsFormat)==0 
+  Vars_nForm = length(Cols)!=0 & length(ColsFormat)==0 
+  Vars_Form_nDet = length(Cols)!=0 & length(ColsFormat)!=0 & !DetailInformation 
+  Vars_Form_Det = length(Cols)!=0 & length(ColsFormat)!=0 & DetailInformation 
+```
+
+`r if(nVars_nForm){"The variables and their format are not specified"}`
+```{r Vars and Format non specified, include=TRUE, echo=FALSE}
+if(nVars_nForm){  
+  for(i in names(Dataset)){
+    if(df_output["unique_count",i]<=10){
+      p = ggplot(Dataset, aes_string(x=i))+
+           geom_bar()+
+           ggtitle(paste0("Bar graph of ",i, ":"))
+      suppressMessages(print(p))
+    }
+    if(df_output["unique_count",i]>10 & df_output["unique_count",i]<=50){
+      p = ggplot(Dataset, aes_string(x=i))+
+            geom_bar()+
+            ggtitle(paste0("Histogram of ",i, ":"))
+      suppressMessages(print(p))
+    }
+    if(df_output["unique_count",i]>50){
+      p = ggplot(Dataset, aes_string(x=i))+
+           geom_density()+
+           ggtitle(paste0("Density of ",i, ":"))
+      suppressMessages(print(p))
+      }
+  }
+}
+```
+
+`r if(Vars_nForm){"The format of the variable is not specified"}`
+```{r Vars specified and Format non specified, include=TRUE, echo=FALSE}
+if(Vars_nForm){
+  for(i in Cols){
+        if(df_output["unique_count",i]<=10){
+          p = ggplot(Dataset, aes_string(x=i))+
+               geom_bar()+
+               ggtitle(paste0("Bar graph of ",i, ":"))
+          suppressMessages(print(p))
+        }
+        if(df_output["unique_count",i]>10 & df_output["unique_count",i]<=50){
+          p = ggplot(Dataset, aes_string(x=i))+
+              geom_histogram()+
+              ggtitle(paste0("Histogram of ",i, ":"))
+          suppressMessages(print(p))
+        }
+        if(df_output["unique_count",i]>50){
+          p = ggplot(Dataset, aes_string(x=i))+
+               geom_density()+
+               ggtitle(paste0("Density of ",i, ":"))
+          suppressMessages(print(p))
+        }
+  }
+}
+```
+
+`r if(Vars_Form_Det){"The variables to be described and their formats are specified"}`
+```{r Vars specified and Format specified and Detailed, results = "asis", include=TRUE, echo=FALSE}
+if(Vars_Form_Det){
+    form_iteration=1
+    for(i in Cols){
+      if(ColsFormat[form_iteration]=="binary"){
+        cat("\n")
+        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat("\n")
+        
+        data_subset <- Dataset[ , get(i)] 
+        compDataset<-Dataset[complete.cases(data_subset), ]
+        
+        first_value = unique(compDataset[,get(i)])[1]
+        second_value = unique(compDataset[,get(i)])[2]
+        
+        n_firs_value = dim(compDataset[get(i)==first_value,])[1]
+        n_second_value = dim(compDataset[get(i)==second_value,])[1]
+        
+        prop_firs_value = n_firs_value/n_of_observations*100
+        prop_second_value = n_second_value/n_of_observations*100
+        
+        DF_binary=data.frame(c(first_value, second_value, NA),
+                             c(n_firs_value, n_second_value, df_output[1,i]),
+                             c(prop_firs_value, prop_second_value, df_output[2,i] ))
+        cat("\n")
+        print(knitr::kable(DF_binary, col.names = c("Values", "Count", "Proportion")))
+        cat("\n")
+        
+        p=ggplot(Dataset, aes_string(x=i))+
+          geom_bar()+
+          ggtitle(paste0("Bar graph of ",i, " defined as binary:"))
+        suppressMessages(print(p))
+       cat("\n")
+
+      }
+      if(ColsFormat[form_iteration]=="categorical"){
+        cat("\n")
+        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat("\n")
+        p=ggplot(Dataset, aes_string(x=i))+
+          geom_bar()+
+          ggtitle(paste0("Bar graph of ",i, " defined as categorical:"))+
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        suppressMessages(print(p))
+        cat("\n")
+      }
+      if(ColsFormat[form_iteration]=="continuous"){
+        cat("\n")
+        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat("\n")
+        p1=ggplot(Dataset, aes_string(x=i))+
+          geom_histogram()+
+          ggtitle(paste0("Histogram of ",i, " defined as continuous:"))
+        suppressMessages(print(p1))
+        
+        p2=ggplot(Dataset, aes_string(y=i))+
+        geom_boxplot()+
+        ggtitle(paste0("Box Plot of ",i, " defined as continuous:"))
+        suppressMessages(print(p2))
+        cat("\n")
+      }
+      if(ColsFormat[form_iteration]=="date"){
+        cat("\n")
+        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat("\n")
+        
+        p=ggplot(Dataset, aes_string(x=i))+
+          geom_histogram()+
+          scale_x_date(breaks="1 month")+
+          ggtitle(paste0("Histogram of ",i, " defined as date:"))+
+          theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+        suppressMessages(print(p))
+        cat("\n")
+      }
+      if(ColsFormat[form_iteration]=="boolean"){
+        cat("\n")
+        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat("\n")
+        
+        data_subset <- Dataset[ , get(i)] 
+        compDataset<-Dataset[complete.cases(data_subset), ]
+        
+        first_value = unique(compDataset[,get(i)])[1]
+        second_value = unique(compDataset[,get(i)])[2]
+        
+        n_firs_value = dim(compDataset[get(i)==first_value,])[1]
+        n_second_value = dim(compDataset[get(i)==second_value,])[1]
+        
+        prop_firs_value = n_firs_value/n_of_observations*100
+        prop_second_value = n_second_value/n_of_observations*100
+        
+        DF_binary=data.frame(c(first_value, second_value, NA),
+                             c(n_firs_value, n_second_value, df_output[1,i]),
+                             c(prop_firs_value, prop_second_value, df_output[2,i] ))
+        cat("\n")
+        print(knitr::kable(DF_binary, col.names = c("Values", "Count", "Proportion")))
+        cat("\n")
+        
+        p=ggplot(Dataset, aes_string(x=i))+
+          geom_bar()+
+          ggtitle(paste0("Bar graph of ",i, " defined as boolean:"))
+        suppressMessages(print(p))
+        cat("\n")
+
+      }
+      form_iteration=form_iteration+1
+    }
+}
+```
+
+`r if(Vars_Form_nDet){"The variables to be described and their formats are specified."}`
+```{r Vars specified and Format specified and non Detailed, results = "asis", include=TRUE, echo=FALSE}
+if(Vars_Form_nDet){
+    form_iteration=1
+    for(i in Cols){
+      if(ColsFormat[form_iteration]=="binary"){
+        cat("\n")
+        cat(paste0("Table of **", as.character(i), "**:"))
+        cat("\n")
+        data_subset <- Dataset[ , get(i)] 
+        compDataset<-Dataset[complete.cases(data_subset), ]
+        
+        first_value = unique(compDataset[,get(i)])[1]
+        second_value = unique(compDataset[,get(i)])[2]
+        
+        prop_firs_value = dim(compDataset[get(i)==first_value,])[1]/n_of_observations*100
+        prop_second_value = dim(compDataset[get(i)==second_value,])[1]/n_of_observations*100
+        
+        DF_binary=data.frame(c(first_value, second_value, NA), c(prop_firs_value, prop_second_value, df_output[2,i] ))
+        cat("\n")
+        print(knitr::kable(DF_binary, col.names = c("values", "Proportion")))
+        cat("\n")
+        
+      }
+      if(ColsFormat[form_iteration]=="categorical"){
+        cat("\n")
+        cat(paste0("Table of **", as.character(i), "**:"))
+        cat("\n")
+
+      }
+      if(ColsFormat[form_iteration]=="continuous"){
+        cat("\n")
+        cat(paste0("Table of **", as.character(i), "**:"))
+        cat("\n")
+
+      }
+      if(ColsFormat[form_iteration]=="date"){
+        cat("\n")
+        cat(paste0("Table of **", as.character(i), "**:"))
+        cat("\n")
+
+      }
+      if(ColsFormat[form_iteration]=="boolean"){
+        cat("\n")
+        cat(paste0("Table of **", as.character(i), "**:"))
+        cat("\n")
+        
+        data_subset <- Dataset[ , get(i)] 
+        compDataset<-Dataset[complete.cases(data_subset), ]
+        
+        first_value = unique(compDataset[,get(i)])[1]
+        second_value = unique(compDataset[,get(i)])[2]
+        
+        n_firs_value = dim(compDataset[get(i)==first_value,])[1]
+        n_second_value = dim(compDataset[get(i)==second_value,])[1]
+        
+        prop_firs_value = n_firs_value/n_of_observations*100
+        prop_second_value = n_second_value/n_of_observations*100
+        
+        DF_binary=data.frame(c(first_value, second_value, NA),
+                             c(n_firs_value, n_second_value, df_output[1,i]),
+                             c(prop_firs_value, prop_second_value, df_output[2,i] ))
+        cat("\n")
+        print(knitr::kable(DF_binary, col.names = c("Values", "Count", "Proportion")))
+        cat("\n")
+      }
+    }
+      form_iteration=form_iteration+1
+}
+```

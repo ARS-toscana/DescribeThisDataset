@@ -11,20 +11,28 @@
 #' @param ColsFormat (list, default=list()) list of the format of the columns to be described. 
 #' @param HeadOfDataset (boolean, default=FALSE) caption of head of datasets (first 5 rows of dataset)
 #' @param DetailInformation (boolean, default=FALSE) add also figure in the output
-#' @param StructureOfDataset (boolean, default=TRUE) if TRUE returns the output of the "struct" function
+#' @param StructureOfDataset (boolean, default=FALSE) if TRUE returns the output of the "str" function
 #' @param PathOutputFolder (str, default= paste0(thisdir,"/g_describeHTML")) name of output folder in which HTLM file is saved.
 #' @param NameOutputFile (str, default=’Description_of_NameDataset’)  name of HTML file.
 
+## primo bivio = individual
+## secondo = detail
 
 
 DescribeThisDataset<-function(Dataset,
+                              HeadOfDataset=FALSE,
+                              StructureOfDataset=FALSE,
+                              
                               Individual,
                               #ColumnN,
+                              
+                              DetailInformation=FALSE,
+                              
                               Cols=list(),
                               ColsFormat=list(),
-                              HeadOfDataset=FALSE,
-                              DetailInformation=FALSE,
-                              StructureOfDataset=TRUE,
+                              
+
+                              
                               PathOutputFolder="",
                               NameOutputFile=""
                               ){
