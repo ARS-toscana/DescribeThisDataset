@@ -35,7 +35,7 @@ knitr::opts_chunk$set(echo = FALSE)
   DetailInformation=params$DetailInformation
 ```
   
-```{r first check, echo=FALSE}
+```{r first check}
 ## check that Cols and ColsFormat is a list 
 if (!inherits(Cols, "list")){  
   stop("parameter Cols must be a list")
@@ -51,7 +51,7 @@ if (length(Cols)!=length(ColsFormat)){
 }
 ```
 
-```{r Diagnosi, echo=FALSE}
+```{r Diagnosi}
 
   ## Datatable
   if(!is.data.table(Dataset)){
@@ -78,7 +78,7 @@ if (length(Cols)!=length(ColsFormat)){
 ```
 
 
-```{r second check, echo=FALSE}
+```{r second check}
 ## check if the format is correct
 for(i in names(Dataset)){}
 ```
@@ -86,24 +86,24 @@ for(i in names(Dataset)){}
 This is a description of  **`r NameOfDataset`**, this dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
 
 ### Diagnosi
-```{r DF_output, include=TRUE, echo=FALSE}
+```{r DF_output, include=TRUE}
 knitr::kable(df_output, caption = "Missing and Unique diagnosi")
 ```
  
-```{r Head, include=TRUE, echo=FALSE}
+```{r Head, include=TRUE}
   if(HeadOfDataset==TRUE){
     knitr::kable(head(Dataset),  caption = "Head of the dataset")
   }
 ```
 
 `r if(StructureOfDataset){"This is the structure of the dataset"}`
-```{r Structure, include=TRUE, echo=FALSE}
+```{r Structure, include=TRUE}
   if(StructureOfDataset){
     str(Dataset)
   }
 ```
 
-```{r Boolean Definition, include=TRUE, echo=FALSE}
+```{r Boolean Definition, include=TRUE}
   nVars_nForm = length(Cols)==0 & length(ColsFormat)==0 
   Vars_nForm = length(Cols)!=0 & length(ColsFormat)==0 
   Vars_Form_nDet = length(Cols)!=0 & length(ColsFormat)!=0 & !DetailInformation 
@@ -111,7 +111,7 @@ knitr::kable(df_output, caption = "Missing and Unique diagnosi")
 ```
 
 `r if(nVars_nForm){"The variables and their format are not specified"}`
-```{r Vars and Format non specified, include=TRUE, echo=FALSE}
+```{r Vars and Format non specified, include=TRUE}
 if(nVars_nForm){  
   for(i in names(Dataset)){
     if(df_output["unique_count",i]<=10){
@@ -137,7 +137,7 @@ if(nVars_nForm){
 ```
 
 `r if(Vars_nForm){"The format of the variable is not specified"}`
-```{r Vars specified and Format non specified, include=TRUE, echo=FALSE}
+```{r Vars specified and Format non specified, include=TRUE}
 if(Vars_nForm){
   for(i in Cols){
         if(df_output["unique_count",i]<=10){
@@ -163,7 +163,7 @@ if(Vars_nForm){
 ```
 
 `r if(Vars_Form_Det){"The variables to be described and their formats are specified"}`
-```{r Vars specified and Format specified and Detailed, results = "asis", include=TRUE, echo=FALSE}
+```{r Vars specified and Format specified and Detailed, results = "asis", include=TRUE}
 if(Vars_Form_Det){
     form_iteration=1
     for(i in Cols){
@@ -215,12 +215,13 @@ if(Vars_Form_Det){
         cat("\n")
         
         quantile_table=quantile(Dataset[,get(i)], probs = seq(0, 1, 0.25), na.rm = FALSE)
-        var_mean= mean(Dataset[,get(i)], na.rm=TRUE)
-        quantile_table=append(quantile_table, var_mean)
-        names(quantile_table)=c("Minimum",   "25th Percentile ",  "Median",  "75th Percentile",  "Maximum", "Mean") 
+        variable_mean= mean(Dataset[,get(i)], na.rm=TRUE)
+        variable_sd=sqrt(var(Dataset[,get(i)], na.rm=TRUE))
+        quantile_table=append(quantile_table, c(variable_mean, variable_sd))
+        names(quantile_table)=c("Minimum",   "25th Percentile ",  "Median",  "75th Percentile",  "Maximum", "Mean", "Standar Deviation") 
         
         cat("\n")
-        print(knitr::kable(quantile_table, col.names = c( "Value"),  caption = "Mean and Percentile table"))
+        print(knitr::kable(quantile_table, col.names = c( "Value"),  caption = "Mean, SD and Percentile table"))
         cat("\n")
         
         p1=ggplot(Dataset, aes_string(x=i))+
@@ -284,7 +285,7 @@ if(Vars_Form_Det){
 ```
 
 `r if(Vars_Form_nDet){"The variables to be described and their formats are specified."}`
-```{r Vars specified and Format specified and non Detailed, results = "asis", include=TRUE, echo=FALSE}
+```{r Vars specified and Format specified and non Detailed, results = "asis", include=TRUE}
 if(Vars_Form_nDet){
     form_iteration=1
     for(i in Cols){
@@ -302,6 +303,7 @@ if(Vars_Form_nDet){
         prop_second_value = dim(compDataset[get(i)==second_value,])[1]/n_of_observations*100
         
         DF_binary=data.frame(c(first_value, second_value, NA), c(prop_firs_value, prop_second_value, df_output[2,i] ))
+        
         cat("\n")
         print(knitr::kable(DF_binary, col.names = c("values", "Proportion")))
         cat("\n")
@@ -319,12 +321,13 @@ if(Vars_Form_nDet){
         cat("\n")
         
         quantile_table=quantile(Dataset[,get(i)], probs = seq(0, 1, 0.25), na.rm = FALSE)
-        var_mean= mean(Dataset[,get(i)], na.rm=TRUE)
-        quantile_table=append(quantile_table, var_mean)
-        names(quantile_table)=c("Minimum",   "25th Percentile ",  "Median",  "75th Percentile",  "Maximum", "Mean") 
+        variable_mean= mean(Dataset[,get(i)], na.rm=TRUE)
+        variable_sd=sqrt(var(Dataset[,get(i)], na.rm=TRUE))
+        quantile_table=append(quantile_table, c(variable_mean, variable_sd))
+        names(quantile_table)=c("Minimum",   "25th Percentile ",  "Median",  "75th Percentile",  "Maximum", "Mean", "Standar Deviation") 
         
         cat("\n")
-        print(knitr::kable(quantile_table, col.names = c( "Value"),  caption = "Mean and Percentile table"))
+        print(knitr::kable(quantile_table, col.names = c( "Value"),  caption = "Mean, SD and Percentile table"))
         cat("\n")
 
       }
