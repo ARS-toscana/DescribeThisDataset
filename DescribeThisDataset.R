@@ -8,18 +8,16 @@ DescribeThisDataset <- function(Dataset,
                                 NameOutputFile="Dataset",
                                 Cols=list(),
                                 ColsFormat=list(),
+                                DateFormat_ymd=TRUE,
                                 DetailInformation=TRUE,
                                 PathOutputFolder){
-  
-  
-  
-  
 # library
 if (!require("ggplot2")) install.packages("ggplot2") 
 library(ggplot2)
 if (!require("data.table")) install.packages("data.table")
 library(data.table)
-
+if (!require("lubridate")) install.packages("lubridate")
+library(lubridate )
 
 ## check that Cols and ColsFormat is a list 
 if (!inherits(Cols, "list")){  
@@ -34,6 +32,21 @@ if (!inherits(ColsFormat, "list")){
 if (length(Cols)!=length(ColsFormat)){  
   stop("parameter Cols must have the same length as ColsFormat")
 }
+
+## check if the names of the var are correct
+for(i in Cols){
+  if(!(i %in% names(Dataset))){
+    stop(paste0("the varible ", i, " is not present in the dataset"))
+  }
+}
+  
+## check if the format is correct
+for(i in ColsFormat){
+  if(!(i == "binary" | i == "categorical" | i == "continuous" | i == "date" | i == "boolean")){
+    stop(paste0("the format ", i, " is not recognized"))
+  }
+}
+  
 ## Datatable
 if(!is.data.table(Dataset)){
   Dataset=data.table(Dataset)
@@ -44,7 +57,7 @@ Database_dim<-dim(Dataset)
 n_of_observations<-Database_dim[1]
 n_of_variables<-Database_dim[2]
 
-## Table Output
+## Output Table
 row_of_df_output=4
 df_output<- data.frame(matrix(ncol = n_of_variables, nrow = row_of_df_output))
 colnames(df_output)<-names(Dataset)
@@ -73,5 +86,6 @@ render("DescribeThisDataset.Rmd",
                    Cols= Cols,
                    ColsFormat=ColsFormat,
                    DetailInformation=DetailInformation,
-                   df_output=df_output))
+                   df_output=df_output,
+                   DateFormat_ymd=DateFormat_ymd))
 }

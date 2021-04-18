@@ -13,6 +13,7 @@ params:
   NameOfDataset: "Dataset"
   Cols: list()
   ColsFormat: list()
+  DateFormat_ymd: TRUE
   DetailInformation: TRUE
   df_output: df_output
 ---
@@ -20,7 +21,6 @@ params:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
-
 
 ```{r parameters, include=FALSE}
   Dataset = params$Dataset
@@ -31,6 +31,7 @@ knitr::opts_chunk$set(echo = FALSE)
   Cols = params$Cols
   ColsFormat = params$ColsFormat
   DetailInformation = params$DetailInformation
+  DateFormat_ymd= params$DateFormat_ymd
   df_output = params$df_output
 ```
   
@@ -139,7 +140,7 @@ if(Vars_Form_Det){
                              c(n_firs_value, n_second_value, df_output[1,i]),
                              c(prop_firs_value, prop_second_value, df_output[2,i] ))
         cat("\n")
-        print(knitr::kable(DF_binary, col.names = c("Values", "Count", "Proportion")))
+        print(knitr::kable(DF_binary, col.names = c("Values", "Count", "percentage")))
         cat("\n")
         
         p=ggplot(Dataset, aes_string(x=i))+
@@ -147,11 +148,37 @@ if(Vars_Form_Det){
           ggtitle(paste0("Bar graph of ",i, " defined as binary:"))
         suppressMessages(print(p))
        cat("\n")
+       cat("\n")
 
       }
       if(ColsFormat[form_iteration]=="categorical"){
         cat("\n")
         cat(paste0("## Description of **", as.character(i), "**:"))
+        cat("\n")
+        
+        data_subset <- Dataset[ , get(i)] 
+        compDataset<-Dataset[complete.cases(data_subset), ]
+        
+        category=unique(compDataset[ , get(i)])
+        count=list()
+        percentage=list()
+        iteration_count=1
+        for(z in category){
+          count=append(count, dim(compDataset[get(i)==z,])[1])
+          percentage=append(percentage, count[[iteration_count]]/n_of_observations*100)
+          iteration_count=iteration_count+1
+        }
+        category = append(category, NA)
+        count = append(count, df_output[1,i])
+        percentage = append(percentage, df_output[2,i])
+        
+        DF_categorical= data.frame(rbind(count, percentage))
+        names(DF_categorical) = category
+        
+        cat("\n")
+        print(knitr::kable(DF_categorical))
+        cat("\n")
+        
         cat("\n")
         p=ggplot(Dataset, aes_string(x=i))+
           geom_bar()+
@@ -186,11 +213,23 @@ if(Vars_Form_Det){
         suppressMessages(print(p2))
         cat("\n")
       }
+      
       if(ColsFormat[form_iteration]=="date"){
         cat("\n")
         cat(paste0("## Description of **", as.character(i), "**:"))
         cat("\n")
         
+        if(DateFormat_ymd){
+          Dataset[,eval(i)]<-ymd(Dataset[,get(i)])
+        }
+        
+        date_table = c(min(Dataset[,get(i)]), max(Dataset[,get(i)]))
+        names(date_table) = c("Min", "Max" )
+        
+        cat("\n")
+        print(knitr::kable(date_table, col.names = c( "Date"),  caption = "Minumum and Maximum Date"))
+        cat("\n")
+          
         p=ggplot(Dataset, aes_string(x=i))+
           geom_histogram()+
           scale_x_date(breaks="1 month")+
@@ -220,7 +259,7 @@ if(Vars_Form_Det){
                              c(n_firs_value, n_second_value, df_output[1,i]),
                              c(prop_firs_value, prop_second_value, df_output[2,i] ))
         cat("\n")
-        print(knitr::kable(DF_binary, col.names = c("Values", "Count", "Proportion")))
+        print(knitr::kable(DF_binary, col.names = c("Values", "Count", "percentage")))
         cat("\n")
         
         p=ggplot(Dataset, aes_string(x=i))+
@@ -242,7 +281,7 @@ if(Vars_Form_nDet){
     for(i in Cols){
       if(ColsFormat[form_iteration]=="binary"){
         cat("\n")
-        cat(paste0("Table of **", as.character(i), "**:"))
+        cat(paste0("## Description of **", as.character(i), "**:"))
         cat("\n")
         data_subset <- Dataset[ , get(i)] 
         compDataset<-Dataset[complete.cases(data_subset), ]
@@ -256,19 +295,42 @@ if(Vars_Form_nDet){
         DF_binary=data.frame(c(first_value, second_value, NA), c(prop_firs_value, prop_second_value, df_output[2,i] ))
         
         cat("\n")
-        print(knitr::kable(DF_binary, col.names = c("values", "Proportion")))
+        print(knitr::kable(DF_binary, col.names = c("values", "percentage")))
         cat("\n")
         
       }
       if(ColsFormat[form_iteration]=="categorical"){
         cat("\n")
-        cat(paste0("Table of **", as.character(i), "**:"))
+        cat(paste0("## Description of **", as.character(i), "**:"))
         cat("\n")
-
+        
+        data_subset <- Dataset[ , get(i)] 
+        compDataset<-Dataset[complete.cases(data_subset), ]
+        
+        category=unique(compDataset[ , get(i)])
+        count=list()
+        percentage=list()
+        iteration_count=1
+        for(z in category){
+          count=append(count, dim(compDataset[get(i)==z,])[1])
+          percentage=append(percentage, count[[iteration_count]]/n_of_observations*100)
+          iteration_count=iteration_count+1
+        }
+        category = append(category, NA)
+        count = append(count, df_output[1,i])
+        percentage = append(percentage, df_output[2,i])
+        
+        DF_categorical= data.frame(rbind(count, percentage))
+        names(DF_categorical) = category
+        
+        cat("\n")
+        print(knitr::kable(DF_categorical))
+        cat("\n")
       }
+      
       if(ColsFormat[form_iteration]=="continuous"){
         cat("\n")
-        cat(paste0("Table of **", as.character(i), "**:"))
+        cat(paste0("## Description of **", as.character(i), "**:"))
         cat("\n")
         
         quantile_table=quantile(Dataset[,get(i)], probs = seq(0, 1, 0.25), na.rm = FALSE)
@@ -282,15 +344,26 @@ if(Vars_Form_nDet){
         cat("\n")
 
       }
+      
       if(ColsFormat[form_iteration]=="date"){
         cat("\n")
-        cat(paste0("Table of **", as.character(i), "**:"))
+        cat(paste0("## Description of **", as.character(i), "**:"))
         cat("\n")
-
+        
+        if(DateFormat_ymd){
+          Dataset[,eval(i)]<-ymd(Dataset[,get(i)])
+        }
+        date_table = c(min(Dataset[,get(i)]), max(Dataset[,get(i)]))
+        names(date_table) = c("Min", "Max" )
+        
+        cat("\n")
+        print(knitr::kable(date_table, col.names = c( "Date"),  caption = "Minumum and Maximum Date"))
+        cat("\n")
       }
+      
       if(ColsFormat[form_iteration]=="boolean"){
         cat("\n")
-        cat(paste0("Table of **", as.character(i), "**:"))
+        cat(paste0("## Description of **", as.character(i), "**:"))
         cat("\n")
         
         data_subset <- Dataset[ , get(i)] 
@@ -309,10 +382,10 @@ if(Vars_Form_nDet){
                              c(n_firs_value, n_second_value, df_output[1,i]),
                              c(prop_firs_value, prop_second_value, df_output[2,i] ))
         cat("\n")
-        print(knitr::kable(DF_binary, col.names = c("Values", "Count", "Proportion")))
+        print(knitr::kable(DF_binary, col.names = c("Values", "Count", "percentage")))
         cat("\n")
       }
-    }
       form_iteration=form_iteration+1
+    }
 }
 ```
