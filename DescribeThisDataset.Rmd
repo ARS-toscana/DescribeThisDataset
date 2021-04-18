@@ -10,6 +10,7 @@ params:
   NameOfDataset: "Dataset"
   Cols: list()
   ColsFormat: list()
+  DateFormat: ""
   DetailInformation: TRUE
 ---
 
@@ -22,6 +23,8 @@ knitr::opts_chunk$set(echo = FALSE)
   library(ggplot2)
   if (!require("data.table")) install.packages("data.table")
   library(data.table)
+  if (!require("lubridate ")) install.packages("lubridate ")
+  library(lubridate )
 ```
 
 ```{r parameters, include=FALSE}
@@ -235,11 +238,25 @@ if(Vars_Form_Det){
         suppressMessages(print(p2))
         cat("\n")
       }
+      
       if(ColsFormat[form_iteration]=="date"){
         cat("\n")
         cat(paste0("## Description of **", as.character(i), "**:"))
         cat("\n")
         
+        if(DateFormat=="ymd"){
+          Dataset[,eval(i)]<-ymd(Dataset[,get(i)])
+        }else{
+          Dataset[,eval(i)]<-as.Date(Dataset[,get(i)], format=DateFormat)
+        }
+        
+        date_table = c(min(Dataset[,get(i)]), max(Dataset[,get(i)]))
+        names(date_table) = c("Min", "Max" )
+        
+        cat("\n")
+        print(knitr::kable(date_table, col.names = c( "Date"),  caption = "Minumum and Maximum Date"))
+        cat("\n")
+          
         p=ggplot(Dataset, aes_string(x=i))+
           geom_histogram()+
           scale_x_date(breaks="1 month")+
@@ -334,6 +351,18 @@ if(Vars_Form_nDet){
       if(ColsFormat[form_iteration]=="date"){
         cat("\n")
         cat(paste0("Table of **", as.character(i), "**:"))
+        cat("\n")
+        if(DateFormat=="ymd"){
+          Dataset[,eval(i)]<-ymd(Dataset[,eval(i)])
+        }else{
+          Dataset[,eval(i)]<-as.Date(Dataset[,get(i)], format=DateFormat)
+        }
+        
+        date_table = c(min(Dataset[,get(i)]), max(Dataset[,get(i)]))
+        names(date_table) = c("Min", "Max" )
+        
+        cat("\n")
+        print(knitr::kable(date_table, col.names = c( "Date"),  caption = "Minumum and Maximum Date"))
         cat("\n")
 
       }

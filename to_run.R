@@ -32,16 +32,16 @@ DF_vaccines$vx_record_date<-ymd(DF_vaccines$vx_record_date)
 
 source("DescribeThisDataset.R")
 
-DescribeThisDataset(Dataset=Cars_Data,
-                    Individual=T,
-                    ColumnN=NULL,
-                    #HeadOfDataset=TRUE,
-                    #StructureOfDataset=TRUE,
-                    NameOutputFile="Cars_continuous",
-                    Cols=list("hp"),
-                    ColsFormat=list("continuous"),
-                    DetailInformation=TRUE,
-                    PathOutputFolder=PathOutputFolder)
+# DescribeThisDataset(Dataset=Cars_Data,
+#                     Individual=T,
+#                     ColumnN=NULL,
+#                     #HeadOfDataset=TRUE,
+#                     #StructureOfDataset=TRUE,
+#                     NameOutputFile="Cars_continuous",
+#                     Cols=list("hp"),
+#                     ColsFormat=list("continuous"),
+#                     DetailInformation=TRUE,
+#                     PathOutputFolder=PathOutputFolder)
 
 DescribeThisDataset(Dataset=DF_vaccines,
                     Individual=T,
@@ -50,6 +50,7 @@ DescribeThisDataset(Dataset=DF_vaccines,
                     #StructureOfDataset=TRUE,
                     NameOutputFile="Vaccine_Dataset",
                     Cols=list("vx_admin_date"),
-                    ColsFormat=list("continuous"),
+                    ColsFormat=list("date"),
+                    DateFormat="ymd",
                     DetailInformation=TRUE,
                     PathOutputFolder=PathOutputFolder)

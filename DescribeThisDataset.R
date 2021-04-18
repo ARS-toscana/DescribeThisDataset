@@ -8,6 +8,7 @@ DescribeThisDataset <- function(Dataset,
                                 NameOutputFile="Dataset",
                                 Cols=list(),
                                 ColsFormat=list(),
+                                DateFormat="",
                                 DetailInformation=TRUE,
                                 PathOutputFolder){
                                        
@@ -22,5 +23,6 @@ render("DescribeThisDataset.Rmd",
                    NameOfDataset=NameOutputFile,
                    Cols= Cols,
                    ColsFormat=ColsFormat,
+                   DateFormat="",
                    DetailInformation=DetailInformation))
 }
