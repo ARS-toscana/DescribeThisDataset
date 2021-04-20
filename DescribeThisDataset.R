@@ -20,9 +20,10 @@ if (!require("lubridate")) install.packages("lubridate")
 library(lubridate )
 if (!require("rmarkdown")) install.packages("rmarkdown")
 library(rmarkdown )
-
-
-
+if (!require("kableExtra")) install.packages("kableExtra")
+library(kableExtra )
+if (!require("DT")) install.packages("DT")
+library(DT)
 
   
 ## check that Cols and ColsFormat is a list 

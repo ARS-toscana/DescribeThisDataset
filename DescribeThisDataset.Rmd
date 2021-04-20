@@ -49,18 +49,21 @@ knitr::opts_chunk$set(echo = FALSE)
 h1 {text-align: center; color: #00adef}
 h2 {text-align: center; color: #00adef}
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {background-color: #00adef; border-color: #00adef}
+    
 ```
 
 This is a description of  **`r NameOfDataset`**, this dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
 
 ## Diagnosi
 ```{r DF_output, include=TRUE}
-knitr::kable(df_output, caption = "Missing and Unique diagnosi")
+paged_table(df_output)
 ```
  
 ```{r Head, include=TRUE}
   if(HeadOfDataset==TRUE){
-    knitr::kable(head(Dataset),  caption = "Head of the dataset")
+    t= knitr::kable(head(Dataset),  caption = "Head of the dataset")
+    t=kable_material_dark(t)
+    scroll_box(t, width = "100%")
   }
 ```
 
