@@ -61,9 +61,8 @@ paged_table(df_output)
  
 ```{r Head, include=TRUE}
   if(HeadOfDataset==TRUE){
-    t= knitr::kable(head(Dataset),  caption = "Head of the dataset")
-    t=kable_material_dark(t)
-    scroll_box(t, width = "100%")
+    knitr::kable(head(Dataset),  caption = "Head of the dataset")
+
   }
 ```
 
