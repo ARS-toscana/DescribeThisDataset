@@ -10,7 +10,7 @@ DescribeThisDataset <- function(Dataset,
                                 ColsFormat=list(),
                                 DateFormat_ymd=TRUE,
                                 DetailInformation=TRUE,
-                                PathOutputFolder){
+                                PathOutputFolder=paste0(thisdir,"/g_describeHTML")){
 # library
 if (!require("ggplot2")) install.packages("ggplot2") 
 library(ggplot2)
@@ -18,7 +18,13 @@ if (!require("data.table")) install.packages("data.table")
 library(data.table)
 if (!require("lubridate")) install.packages("lubridate")
 library(lubridate )
+if (!require("rmarkdown")) install.packages("rmarkdown")
+library(rmarkdown )
 
+
+
+
+  
 ## check that Cols and ColsFormat is a list 
 if (!inherits(Cols, "list")){  
   stop("parameter Cols must be a list")
@@ -46,6 +52,10 @@ for(i in ColsFormat){
     stop(paste0("the format ", i, " is not recognized"))
   }
 }
+
+# Directories
+suppressWarnings(if (!file.exists(PathOutputFolder)) dir.create(file.path( PathOutputFolder)))
+  
   
 ## Datatable
 if(!is.data.table(Dataset)){

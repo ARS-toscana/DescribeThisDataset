@@ -3,6 +3,7 @@ title: "DescribeThisDataset"
 output: 
   html_document:
     toc: TRUE
+    toc_float: TRUE
     theme: united
 params:
   Dataset: NULL
@@ -34,10 +35,25 @@ knitr::opts_chunk$set(echo = FALSE)
   DateFormat_ymd= params$DateFormat_ymd
   df_output = params$df_output
 ```
-  
+
+```{r ARS_colours, echo = F}
+#\definecolor{lightblueARS}{RGB}{108,207,246} --> #6ccff6
+#\definecolor{blueARS}{RGB}{0,173,239}        --> #00adef
+#\definecolor{lightroseARS}{RGB}{245,155,193} --> #f59bc1
+#\definecolor{roseARS}{RGB}{237,0,140}        --> #ed008c
+#\definecolor{lightgrayARS}{RGB}{220,220,222} --> #dcdcde
+#\definecolor{grayARS}{RGB}{188,189,193}      --> #bcbdc1
+```
+
+```{css, echo = F}
+h1 {text-align: center; color: #00adef}
+h2 {text-align: center; color: #00adef}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {background-color: #00adef; border-color: #00adef}
+```
+
 This is a description of  **`r NameOfDataset`**, this dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
 
-### Diagnosi
+## Diagnosi
 ```{r DF_output, include=TRUE}
 knitr::kable(df_output, caption = "Missing and Unique diagnosi")
 ```
@@ -160,6 +176,7 @@ if(Vars_Form_Det){
         compDataset<-Dataset[complete.cases(data_subset), ]
         
         category=unique(compDataset[ , get(i)])
+        category=sort(category)
         count=list()
         percentage=list()
         iteration_count=1
@@ -308,6 +325,7 @@ if(Vars_Form_nDet){
         compDataset<-Dataset[complete.cases(data_subset), ]
         
         category=unique(compDataset[ , get(i)])
+        category=sort(category)
         count=list()
         percentage=list()
         iteration_count=1
