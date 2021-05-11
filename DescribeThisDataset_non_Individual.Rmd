@@ -1,0 +1,97 @@
+---
+title: "DescribeThisDataset"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    theme: united
+params:
+  Dataset: NULL
+  Individual: TRUE
+  ColumnN: NULL
+  HeadOfDataset: FALSE
+  StructureOfDataset: FALSE
+  NameOfDataset: "Dataset"
+  Cols: list()
+  ColsFormat: list()
+  DateFormat_ymd: TRUE
+  DetailInformation: TRUE
+  df_output: df_output
+  x_var: NULL
+  y_var: NULL
+  by_var: NULL
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r parameters, include=FALSE}
+  Dataset = params$Dataset
+  Individual = params$Individual
+  HeadOfDataset = params$HeadOfDataset
+  StructureOfDataset = params$StructureOfDataset
+  NameOfDataset = params$NameOfDataset
+  Cols = params$Cols
+  ColsFormat = params$ColsFormat
+  DetailInformation = params$DetailInformation
+  DateFormat_ymd= params$DateFormat_ymd
+  df_output = params$df_output
+  x_var= params$x_var
+  y_var= params$y_var
+  by_var= params$by_var
+```
+
+```{r ARS_colours, echo = F}
+#\definecolor{lightblueARS}{RGB}{108,207,246} --> #6ccff6
+#\definecolor{blueARS}{RGB}{0,173,239}        --> #00adef
+#\definecolor{lightroseARS}{RGB}{245,155,193} --> #f59bc1
+#\definecolor{roseARS}{RGB}{237,0,140}        --> #ed008c
+#\definecolor{lightgrayARS}{RGB}{220,220,222} --> #dcdcde
+#\definecolor{grayARS}{RGB}{188,189,193}      --> #bcbdc1
+```
+
+```{css, echo = F}
+h1 {text-align: center; color: #00adef}
+h2 {text-align: center; color: #00adef}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {background-color: #00adef; border-color: #00adef}
+    
+```
+
+This is a description of  **`r NameOfDataset`**, this dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
+
+## Diagnosi
+```{r DF_output, include=TRUE}
+paged_table(df_output)
+```
+ 
+```{r Head, include=TRUE}
+  if(HeadOfDataset==TRUE){
+    knitr::kable(head(Dataset),  caption = "Head of the dataset")
+
+  }
+```
+
+`r if(StructureOfDataset){"This is the structure of the dataset"}`
+```{r Structure, include=TRUE}
+  if(StructureOfDataset){
+    str(Dataset)
+  }
+```
+
+```{r Boolean Definition, include=TRUE}
+  nVars_nForm = length(Cols)==0 & length(ColsFormat)==0 
+  Vars_nForm = length(Cols)!=0 & length(ColsFormat)==0 
+  Vars_Form_nDet = length(Cols)!=0 & length(ColsFormat)!=0 & !DetailInformation 
+  Vars_Form_Det = length(Cols)!=0 & length(ColsFormat)!=0 & DetailInformation 
+```
+
+## Graphs
+```{r adjusting the dataset, include=TRUE}
+Dataset=Dataset[get(y_var) != 0 & !is.na(get(y_var)), sum(get(y_var)), by= .(get(x_var))]
+
+  p1 <- ggplot(Dataset, aes(get, V1)) +   
+          geom_col(alpha = 0.9, na.rm=TRUE)
+        
+  p1
+```
