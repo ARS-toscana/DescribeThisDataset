@@ -30,6 +30,9 @@ DF_vaccines$vx_dose=ifelse(!(DF_vaccines$vx_dose==1 |DF_vaccines$vx_dose==2), 1,
 DF_vaccines[20:50,"vx_dose"]=NA
 DF_vaccines$vx_record_date<-ymd(DF_vaccines$vx_record_date)
 
+
+DOSES_BIRTHCOHORTS<-fread(paste0(thisdir,"/input/DOSES_BIRTHCOHORTS.csv"))
+DOSES_BIRTHCOHORTS<- DOSES_BIRTHCOHORTS[, weeks_plot:= ymd(week)]
 source("DescribeThisDataset.R")
 
 # DescribeThisDataset(Dataset=Cars_Data,
@@ -53,3 +56,10 @@ DescribeThisDataset(Dataset=DF_vaccines,
                     ColsFormat=list("date", "binary", "categorical", "categorical"),
                     DateFormat_ymd=TRUE,
                     DetailInformation=TRUE)
+
+  DescribeThisDataset(Dataset=DOSES_BIRTHCOHORTS,
+                    Individual=F,
+                    x_var= "weeks_plot",
+                    y_var= "N",
+                    by_var= "weeks_plot",
+)

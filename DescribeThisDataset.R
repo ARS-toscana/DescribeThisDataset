@@ -1,13 +1,16 @@
 
 
 DescribeThisDataset <- function(Dataset,
-                                Individual=T,
                                 ColumnN=NULL,
                                 HeadOfDataset=FALSE,
                                 StructureOfDataset=FALSE,
-                                NameOutputFile="Dataset",
+                                NameOutputFile="Dataset_Description",
                                 Cols=list(),
                                 ColsFormat=list(),
+                                Individual=T,
+                                x_var= NULL,
+                                y_var= NULL,
+                                by_var= NULL,
                                 DateFormat_ymd=TRUE,
                                 DetailInformation=TRUE,
                                 PathOutputFolder=paste0(thisdir,"/g_describeHTML")){
@@ -81,19 +84,38 @@ for( i in names(Dataset)){
 ## check if the format is correct
 for(i in names(Dataset)){}
   
-  
-render("DescribeThisDataset.Rmd",           
-       output_dir=PathOutputFolder,
-       output_file=NameOutputFile, 
-       params=list(Dataset=Dataset,
-                   Individual=Individual,
-                   ColumnN=ColumnN,
-                   HeadOfDataset=HeadOfDataset,
-                   StructureOfDataset=StructureOfDataset,
-                   NameOfDataset=NameOutputFile,
-                   Cols= Cols,
-                   ColsFormat=ColsFormat,
-                   DetailInformation=DetailInformation,
-                   df_output=df_output,
-                   DateFormat_ymd=DateFormat_ymd))
+if(Individual){ 
+  render("DescribeThisDataset_individual.Rmd",           
+         output_dir=PathOutputFolder,
+         output_file=NameOutputFile, 
+         params=list(Dataset=Dataset,
+                     Individual=Individual,
+                     ColumnN=ColumnN,
+                     HeadOfDataset=HeadOfDataset,
+                     StructureOfDataset=StructureOfDataset,
+                     NameOfDataset=NameOutputFile,
+                     Cols= Cols,
+                     ColsFormat=ColsFormat,
+                     DetailInformation=DetailInformation,
+                     df_output=df_output,
+                     DateFormat_ymd=DateFormat_ymd))
+}else{
+  render("DescribeThisDataset_non_individual.Rmd",           
+         output_dir=PathOutputFolder,
+         output_file=NameOutputFile, 
+         params=list(Dataset=Dataset,
+                     Individual=Individual,
+                     ColumnN=ColumnN,
+                     HeadOfDataset=HeadOfDataset,
+                     StructureOfDataset=StructureOfDataset,
+                     NameOfDataset=NameOutputFile,
+                     Cols= Cols,
+                     ColsFormat=ColsFormat,
+                     DetailInformation=DetailInformation,
+                     df_output=df_output,
+                     DateFormat_ymd=DateFormat_ymd,
+                     x_var= x_var,
+                     y_var= y_var,
+                     by_var= by_var))
+}
 }
