@@ -1,10 +1,11 @@
 ---
-title: "DescribeThisDataset"
+title: "Dataset Description"
 output: 
   html_document:
     toc: TRUE
     toc_float: TRUE
     theme: united
+    css: styles.css
 params:
   Dataset: NULL
   Individual: TRUE
@@ -54,22 +55,33 @@ h2 {text-align: center; color: #00adef}
 
 This is a description of  **`r NameOfDataset`**, this dataset is composed by `r n_of_observations` observations of  `r n_of_variables` variables.
 
-## Diagnosi
+## Diagnosis
 ```{r DF_output, include=TRUE}
-paged_table(df_output)
+knitr::kable(df_output)
+      cat('\n')
+      cat('\n')
 ```
+ 
+ <br><br><br><br><br>
  
 ```{r Head, include=TRUE}
   if(HeadOfDataset==TRUE){
     knitr::kable(head(Dataset),  caption = "Head of the dataset")
-
+      cat('\n')
+      cat('<br><br><br><br><br>') 
+      cat('\n')
+      
   }
 ```
 
-`r if(StructureOfDataset){"This is the structure of the dataset"}`
+`r if(StructureOfDataset){"Structure of the dataset:"}`
 ```{r Structure, include=TRUE}
   if(StructureOfDataset){
     str(Dataset)
+    
+      cat('\n')
+      cat('<br><br><br><br><br>') 
+      cat('\n')
   }
 ```
 
@@ -79,8 +91,7 @@ paged_table(df_output)
   Vars_Form_nDet = length(Cols)!=0 & length(ColsFormat)!=0 & !DetailInformation 
   Vars_Form_Det = length(Cols)!=0 & length(ColsFormat)!=0 & DetailInformation 
 ```
-
-`r if(nVars_nForm){"The variables and their format are not specified"}`
+      
 ```{r Vars and Format non specified, include=TRUE}
 if(nVars_nForm){  
   for(i in names(Dataset)){
@@ -106,7 +117,6 @@ if(nVars_nForm){
 }
 ```
 
-`r if(Vars_nForm){"The format of the variable is not specified"}`
 ```{r Vars specified and Format non specified, include=TRUE}
 if(Vars_nForm){
   for(i in Cols){
@@ -132,14 +142,13 @@ if(Vars_nForm){
 }
 ```
 
-`r if(Vars_Form_Det){"The variables to be described and their formats are specified"}`
-```{r Vars specified and Format specified and Detailed, results = "asis", include=TRUE}
+```{r spec_and_Det, results = "asis", include=TRUE}
 if(Vars_Form_Det){
     form_iteration=1
     for(i in Cols){
       if(ColsFormat[form_iteration]=="binary"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         
         data_subset <- Dataset[ , get(i)] 
@@ -167,11 +176,10 @@ if(Vars_Form_Det){
         suppressMessages(print(p))
        cat("\n")
        cat("\n")
-
       }
       if(ColsFormat[form_iteration]=="categorical"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         
         data_subset <- Dataset[ , get(i)] 
@@ -184,7 +192,7 @@ if(Vars_Form_Det){
         iteration_count=1
         for(z in category){
           count=append(count, dim(compDataset[get(i)==z,])[1])
-          percentage=append(percentage, count[[iteration_count]]/n_of_observations*100)
+          percentage=append(percentage, round(count[[iteration_count]]/n_of_observations*100, 2))
           iteration_count=iteration_count+1
         }
         category = append(category, NA)
@@ -208,7 +216,7 @@ if(Vars_Form_Det){
       }
       if(ColsFormat[form_iteration]=="continuous"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         
         quantile_table=quantile(Dataset[,get(i)], probs = seq(0, 1, 0.25), na.rm = FALSE)
@@ -235,7 +243,7 @@ if(Vars_Form_Det){
       
       if(ColsFormat[form_iteration]=="date"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         
         if(DateFormat_ymd){
@@ -259,7 +267,7 @@ if(Vars_Form_Det){
       }
       if(ColsFormat[form_iteration]=="boolean"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         
         data_subset <- Dataset[ , get(i)] 
@@ -286,21 +294,22 @@ if(Vars_Form_Det){
           ggtitle(paste0("Bar graph of ",i, " defined as boolean:"))
         suppressMessages(print(p))
         cat("\n")
-
       }
       form_iteration=form_iteration+1
+      cat('\n')
+      cat('<br><br><br>') 
+      cat('\n')
     }
 }
 ```
 
-`r if(Vars_Form_nDet){"The variables to be described and their formats are specified."}`
 ```{r Vars specified and Format specified and non Detailed, results = "asis", include=TRUE}
 if(Vars_Form_nDet){
     form_iteration=1
     for(i in Cols){
       if(ColsFormat[form_iteration]=="binary"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         data_subset <- Dataset[ , get(i)] 
         compDataset<-Dataset[complete.cases(data_subset), ]
@@ -320,7 +329,7 @@ if(Vars_Form_nDet){
       }
       if(ColsFormat[form_iteration]=="categorical"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         
         data_subset <- Dataset[ , get(i)] 
@@ -333,7 +342,7 @@ if(Vars_Form_nDet){
         iteration_count=1
         for(z in category){
           count=append(count, dim(compDataset[get(i)==z,])[1])
-          percentage=append(percentage, count[[iteration_count]]/n_of_observations*100)
+          percentage=append(percentage, round(count[[iteration_count]]/n_of_observations*100, 2))
           iteration_count=iteration_count+1
         }
         category = append(category, NA)
@@ -350,7 +359,7 @@ if(Vars_Form_nDet){
       
       if(ColsFormat[form_iteration]=="continuous"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         
         quantile_table=quantile(Dataset[,get(i)], probs = seq(0, 1, 0.25), na.rm = FALSE)
@@ -362,12 +371,11 @@ if(Vars_Form_nDet){
         cat("\n")
         print(knitr::kable(quantile_table, col.names = c( "Value"),  caption = "Mean, SD and Percentile table"))
         cat("\n")
-
       }
       
       if(ColsFormat[form_iteration]=="date"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         
         if(DateFormat_ymd){
@@ -383,7 +391,7 @@ if(Vars_Form_nDet){
       
       if(ColsFormat[form_iteration]=="boolean"){
         cat("\n")
-        cat(paste0("## Description of **", as.character(i), "**:"))
+        cat(paste0("## **", as.character(i), "**"))
         cat("\n")
         
         data_subset <- Dataset[ , get(i)] 
@@ -406,6 +414,9 @@ if(Vars_Form_nDet){
         cat("\n")
       }
       form_iteration=form_iteration+1
+      cat('\n')
+      cat('<br><br><br>') 
+      cat('\n')
     }
 }
 ```
